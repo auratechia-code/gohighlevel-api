@@ -1,0 +1,47 @@
+# Entorno virtual
+.venv/
+env/
+venv/
+ENV/
+
+# Archivos de Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Logs
+*.log
+ghl_kb_errors.json
+
+# Datos temporales de scraping
+ghl_kb_output/
+ghl_docs_urls.txt
+master_url_list.json
+
+# IDEs
+.vscode/
+.idea/
+.project
+.pydevproject
+.settings/
+
+# OS
+.DS_Store
+Thumbs.db
