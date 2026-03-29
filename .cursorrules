@@ -1,0 +1,22 @@
+﻿# Cursor Rules for GoHighLevel API Documentation
+
+## 📂 Source of Truth
+- Primary Technical Reference: `docs/01-api-reference/`
+- Navigation Map: `STRUCTURE.md`
+- AI Context: `docs/AI_CONTEXT.md`
+
+## 📡 API Execution Rules
+- **Base URL**: Always use `https://services.leadconnectorhq.com`.
+- **Versioning**: Always include the header `Version: 2021-07-28`.
+- **Auth**: Use Bearer Tokens. Distinguish between Location (Sub-account) and Agency tokens based on the endpoint requirements.
+- **Handling Errors**: Implement logic for 401 (Auth), 403 (Scopes), 422 (Validation), and 429 (Rate Limit).
+- **Pagination**: Handle `limit` and `offset`/`skip` parameters; parse the `meta` object in responses.
+
+## 📝 Documentation Maintenance Rules
+- **Template**: Any new or updated endpoint must follow the **Gold Standard** (Metadata, Request Tables, Response Schema, 12 Code Examples).
+- **Validation**: Run `python scripts/validate_docs.py` after editing documentation.
+- **Slugification**: Use lowercase-kebab-base naming: `{verb}-{resource}.md`. No illegal characters for Windows filenames (`|`, `:`, `*`, etc.).
+
+## 🤖 Response Guidelines
+- When providing API schemas or examples, always cite the specific file path from `docs/01-api-reference/` for traceability.
+- Do not suggest using assets within `internal/` for application logic.
