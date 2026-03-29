@@ -1,65 +1,373 @@
-# GET Get User
+# Get User
 
-**Ruta:** `GET /users/{userId}`
-**Autenticación:** OAuth 2.0 / Private Integration Token
-**Scopes requeridos:** `users.readonly`
-**Rate limit:** Estándar (100 req/10s burst — 200k/día)
+---
 
-## Descripción
-Recupera la información detallada de un usuario, incluyendo sus datos de contacto, permisos granulares (campañas, contactos, workflows, etc.) y los roles asignados a nivel de cuenta o ubicación.
+## 1. METADATA
 
-## Headers
-| Header        | Tipo   | Requerido | Valor             |
-|---------------|--------|-----------|-------------------|
-| Authorization | string | ✅        | Bearer {token}    |
-| Version       | string | ✅        | 2021-07-28        |
+| Property | Value |
+| :--- | :--- |
+| **HTTP Method** | GET |
+| **Endpoint URL** | `https://services.leadconnectorhq.com/users/:userId` |
+| **Scopes Required** | `users.readonly` |
+| **Authentication** | OAuth Access Token / Private Integration Token |
+| **Token Type** | Sub-Account Token |
 
-## Path Parameters
-| Campo | Tipo | Requerido | Descripción |
-|-------|------|-----------|-------------|
-| `userId` | string | ✅ | ID único del usuario. |
+---
 
-## Query Parameters
-*(Ninguno)*
+## 2. REQUEST
 
-## Response 200
+### Header Parameters
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| **Version** | `` | No |  |
+
+### Path Parameters
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| **userId** | `` | No |  |
+
+### Query Parameters
+
+N/A
+### Body Parameters
+
+N/A
+---
+
+## 3. RESPONSE
+
+### Success Schema (200/201 OK)
+
 ```json
 {
-  "id": "user_123",
-  "name": "John Doe",
-  "email": "john@doe.com",
+  "id": "0IHuJvc2ofPAAA8GzTRi",
+  "name": "John Deo",
+  "firstName": "John",
+  "lastName": "Deo",
+  "email": "john@deo.com",
+  "phone": "+1 808-868-8888",
+  "extension": "",
   "permissions": {
+    "campaignsEnabled": true,
+    "campaignsReadOnly": false,
     "contactsEnabled": true,
     "workflowsEnabled": true,
+    "workflowsReadOnly": true,
+    "triggersEnabled": true,
+    "funnelsEnabled": true,
+    "websitesEnabled": false,
     "opportunitiesEnabled": true,
-    "conversationsEnabled": true
+    "dashboardStatsEnabled": true,
+    "bulkRequestsEnabled": true,
+    "appointmentsEnabled": true,
+    "reviewsEnabled": true,
+    "onlineListingsEnabled": true,
+    "phoneCallEnabled": true,
+    "conversationsEnabled": true,
+    "assignedDataOnly": false,
+    "adwordsReportingEnabled": false,
+    "membershipEnabled": false,
+    "facebookAdsReportingEnabled": false,
+    "attributionsReportingEnabled": false,
+    "settingsEnabled": true,
+    "tagsEnabled": true,
+    "leadValueEnabled": true,
+    "marketingEnabled": true,
+    "agentReportingEnabled": true,
+    "botService": false,
+    "socialPlanner": true,
+    "bloggingEnabled": true,
+    "invoiceEnabled": true,
+    "affiliateManagerEnabled": true,
+    "contentAiEnabled": true,
+    "refundsEnabled": true,
+    "recordPaymentEnabled": true,
+    "cancelSubscriptionEnabled": true,
+    "paymentsEnabled": true,
+    "communitiesEnabled": true,
+    "exportPaymentsEnabled": true
   },
+  "scopes": "campaigns.readonly",
   "roles": {
     "type": "account",
     "role": "admin",
-    "locationIds": ["loc_abc"]
+    "locationIds": [
+      "ve9EPM428h8vShlRW1KT"
+    ],
+    "restrictSubAccount": true
+  },
+  "lcPhone": {
+    "locationId": "+1234556677"
+  },
+  "platformLanguage": "en_US"
+}
+```
+
+### Response Field Table
+
+| Name | Type | Description |
+| :--- | :--- | :--- |
+| **id** | `str` |  |
+| **name** | `str` |  |
+| **firstName** | `str` |  |
+| **lastName** | `str` |  |
+| **email** | `str` |  |
+| **phone** | `str` |  |
+| **extension** | `str` |  |
+| **permissions** | `dict` |  |
+| **scopes** | `str` |  |
+| **roles** | `dict` |  |
+| **lcPhone** | `dict` |  |
+| **platformLanguage** | `str` |  |
+
+### Error Codes
+
+| Status Code | Description |
+| :--- | :--- |
+| **400 Bad Request** | Invalid input parameters. |
+| **401 Unauthorized** | Invalid Token. |
+
+---
+
+## 4. CODE EXAMPLES
+
+### 1. CURL
+
+```bash
+curl --request GET \
+  --url https://services.leadconnectorhq.com/users/:userId \
+  --header 'Authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'Version: 2021-07-28' \
+  --header 'Content-Type: application/json' \
+  --header 'Accept: application/json' \
+  --data '{}'
+```
+
+### 2. NODE SDK
+
+```javascript
+const { HighLevel } = require('@gohighlevel/api-client');
+
+const ghl = new HighLevel({
+  clientId: 'YOUR_CLIENT_ID',
+  clientSecret: 'YOUR_CLIENT_SECRET'
+});
+
+async function executeRequest() {
+  try {
+    const response = await ghl.api.request('GET', 'https://services.leadconnectorhq.com/users/:userId', {
+      headers: { 'Version': '2021-07-28' },
+      body: {}
+    });
+    console.log(response);
+  } catch (error) {
+    console.error(error);
   }
 }
 ```
 
-## Errores
-| Status | Error | Causa frecuente | Solución |
-|--------|-------|-----------------|----------|
-| 401 | UNAUTHORIZED | Token inválido. | Refrescar acceso. |
-| 404 | NOT_FOUND | El usuario no existe en la cuenta actual. | Verificar `userId`. |
+### 3. AXIOS
 
-## Ejemplo — Node.js SDK
-```typescript
-const user = await ghl.users.get('user_123');
+```javascript
+const axios = require('axios');
+
+const config = {
+  method: 'get',
+  url: 'https://services.leadconnectorhq.com/users/:userId',
+  headers: { 
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>', 
+    'Version': '2021-07-28', 
+    'Content-Type': 'application/json', 
+    'Accept': 'application/json'
+  },
+  data : {}
+};
+
+axios(config)
+.then(response => console.log(JSON.stringify(response.data)))
+.catch(error => console.log(error));
 ```
 
-## Ejemplo — cURL
-```bash
-curl -G \
-  'https://services.leadconnectorhq.com/users/user_123' \
-  -H 'Authorization: Bearer YOUR_TOKEN' \
-  -H 'Version: 2021-07-28'
+### 4. NATIVE NODE
+
+```javascript
+const https = require('follow-redirects').https;
+
+const options = {
+  'method': 'GET',
+  'hostname': 'services.leadconnectorhq.com',
+  'path': '/users/:userId',
+  'headers': {
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  }
+};
+
+const req = https.request(options, (res) => {
+  let chunks = [];
+  res.on("data", (chunk) => chunks.push(chunk));
+  res.on("end", () => console.log(Buffer.concat(chunks).toString()));
+});
+
+req.write(JSON.stringify({}));
+req.end();
 ```
 
-## Notas
-> El objeto `permissions` es extenso y define qué módulos puede ver o editar el usuario dentro de la plataforma.
+### 5. REQUEST NODE
+
+```javascript
+const request = require('request');
+
+const options = {
+  'method': 'GET',
+  'url': 'https://services.leadconnectorhq.com/users/:userId',
+  'headers': {
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({})
+};
+
+request(options, (error, response) => {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+```
+
+### 6. UNIREST NODE
+
+```javascript
+const unirest = require('unirest');
+
+unirest('GET', 'https://services.leadconnectorhq.com/users/:userId')
+  .headers({
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json'
+  })
+  .send(JSON.stringify({}))
+  .end(res => console.log(res.raw_body));
+```
+
+### 7. PYTHON
+
+```python
+import requests
+import json
+
+url = "https://services.leadconnectorhq.com/users/:userId"
+headers = {
+  'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+  'Version': '2021-07-28',
+  'Content-Type': 'application/json'
+}
+response = requests.request("GET", url, headers=headers, data=json.dumps({}))
+print(response.text)
+```
+
+### 8. PHP
+
+```php
+<?php
+use GuzzleHttp\Client;
+$client = new Client();
+$headers = [
+  'Authorization' => 'Bearer <YOUR_ACCESS_TOKEN>',
+  'Version' => '2021-07-28',
+  'Content-Type' => 'application/json'
+];
+$response = $client->request('GET', 'https://services.leadconnectorhq.com/users/:userId', [
+  'headers' => $headers,
+  'body' => '{}'
+]);
+echo $response->getBody();
+```
+
+### 9. JAVA
+
+```java
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+HttpClient client = HttpClient.newHttpClient();
+HttpRequest request = HttpRequest.newBuilder()
+    .uri(URI.create("https://services.leadconnectorhq.com/users/:userId"))
+    .header("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+    .header("Version", "2021-07-28")
+    .header("Content-Type", "application/json")
+    .method("GET", HttpRequest.BodyPublishers.ofString("{}"))
+    .build();
+
+HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+System.out.println(response.body());
+```
+
+### 10. GO
+
+```go
+package main
+import (
+  "fmt"
+  "strings"
+  "net/http"
+  "io/ioutil"
+)
+func main() {
+  url := "https://services.leadconnectorhq.com/users/:userId"
+  payload := strings.NewReader(`{}`)
+  req, _ := http.NewRequest("GET", url, payload)
+  req.Header.Add("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+  req.Header.Add("Version", "2021-07-28")
+  req.Header.Add("Content-Type", "application/json")
+  res, _ := http.DefaultClient.Do(req)
+  defer res.Body.Close()
+  body, _ := ioutil.ReadAll(res.Body)
+  fmt.Println(string(body))
+}
+```
+
+### 11. RUBY
+
+```ruby
+require 'net/http'
+require 'uri'
+require 'json'
+
+url = URI("https://services.leadconnectorhq.com/users/:userId")
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+request = Net::HTTP::Get.new(url)
+request["Authorization"] = "Bearer <YOUR_ACCESS_TOKEN>"
+request["Version"] = "2021-07-28"
+request["Content-Type"] = "application/json"
+request.body = JSON.dump({})
+response = http.request(request)
+puts response.read_body
+```
+
+### 12. POWERSHELL
+
+```powershell
+$headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+$headers.Add("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+$headers.Add("Version", "2021-07-28")
+$headers.Add("Content-Type", "application/json")
+
+$body = '{}'
+
+$response = Invoke-RestMethod 'https://services.leadconnectorhq.com/users/:userId' -Method 'GET' -Headers $headers -Body $body
+$response | ConvertTo-Json
+```
+
+---
+
+## 5. NOTES
+
+- Ensure the `Version: 2021-07-28` header is included.

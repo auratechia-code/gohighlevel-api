@@ -1,84 +1,504 @@
-# POST Search Opportunities (Advanced)
+# Search Opportunities
 
-**Ruta:** `POST /opportunities/search`
-**Autenticación:** OAuth 2.0 / Private Integration Token
-**Scopes requeridos:** `opportunities.readonly`
-**Rate limit:** Estándar (100 req/10s burst — 200k/día)
+---
 
-## Descripción
-Permite buscar oportunidades utilizando filtros avanzados. Al igual que el buscador de contactos, este endpoint soporta segmentaciones granulares por pipeline, etapa, usuario asignado y fechas.
+## 1. METADATA
 
-## Headers
-| Header        | Tipo   | Requerido | Valor             |
-|---------------|--------|-----------|-------------------|
-| Authorization | string | ✅        | Bearer {token}    |
-| Version       | string | ✅        | 2021-07-28        |
-| Content-Type  | string | ✅        | application/json |
+| Property | Value |
+| :--- | :--- |
+| **HTTP Method** | POST |
+| **Endpoint URL** | `https://services.leadconnectorhq.com/opportunities/search` |
+| **Scopes Required** | `opportunities.readonly` |
+| **Authentication** | OAuth Access Token / Private Integration Token |
+| **Token Type** | Sub-Account Token |
 
-## Path Parameters
-*(Ninguno)*
+---
 
-## Query Parameters
-*(Ninguno)*
+## 2. REQUEST
 
-## Request Body
-```json
-{
-  "locationId": "string — ID de la ubicación (REQUERIDO)",
-  "pipelineId": "string — Filtrar por pipeline específico",
-  "pipelineStageId": "string — Filtrar por etapa",
-  "status": "string — Filtrar por estado (open, won, lost, abandoned)",
-  "assignedTo": "string — Filtrar por usuario asignado",
-  "limit": "number — Resultados por página",
-  "page": "number — Página actual"
-}
-```
+### Header Parameters
 
-> ⚠️ **TIP**: Para filtros más complejos (rangos de fechas, operadores lógicos), consulte la documentación externa especializada.
-> **Doc Oficial Adicional:** [ClickUp Documentation Link](https://doc.clickup.com/8631005/d/h/87cpx-424216/7bf11bc9b94f80f)
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| **Version** | `` | No |  |
 
-## Response 200
+### Path Parameters
+
+N/A
+### Query Parameters
+
+N/A
+### Body Parameters
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| **locationId** | `string` | No |  |
+| **query** | `string` | No |  |
+| **limit** | `number` | No |  |
+| **page** | `number` | No |  |
+| **searchAfter** | `string[]` | No |  |
+| **additionalDetails** | `object` | Yes | notes boolean required tasks boolean required calendarEvents boolean required unReadConversations boolean required |
+| **notes** | `boolean` | No |  |
+| **tasks** | `boolean` | No |  |
+| **calendarEvents** | `boolean` | No |  |
+| **unReadConversations** | `boolean` | No |  |
+
+---
+
+## 3. RESPONSE
+
+### Success Schema (200/201 OK)
+
 ```json
 {
   "opportunities": [
     {
-      "id": "opp_123",
-      "name": "Opportunity A",
+      "id": "yWQobCRIhRguQtD2llvk",
+      "name": "testing",
+      "monetaryValue": 500,
+      "pipelineId": "VDm7RPYC2GLUvdpKmBfC",
+      "pipelineStageId": "e93ba61a-53b3-45e7-985a-c7732dbcdb69",
+      "assignedTo": "zT46WSCPbudrq4zhWMk6",
       "status": "open",
-      "contact": { "id": "cnt_1", "name": "Doe" }
+      "source": "",
+      "lastStatusChangeAt": "2021-08-03T04:55:17.355Z",
+      "lastStageChangeAt": "2021-08-03T04:55:17.355Z",
+      "lastActionDate": "2021-08-03T04:55:17.355Z",
+      "indexVersion": 1,
+      "createdAt": "2021-08-03T04:55:17.355Z",
+      "updatedAt": "2021-08-03T04:55:17.355Z",
+      "contactId": "zT46WSCPbudrq4zhWMk6",
+      "locationId": "zT46WSCPbudrq4zhW",
+      "contact": {
+        "id": "byMEV0NQinDhq8ZfiOi2",
+        "name": "John Deo",
+        "companyName": "Tesla Inc",
+        "email": "john@deo.com",
+        "phone": "+1202-555-0107",
+        "tags": [
+          "string"
+        ]
+      },
+      "notes": [
+        [
+          null
+        ]
+      ],
+      "tasks": [
+        [
+          null
+        ]
+      ],
+      "calendarEvents": [
+        [
+          null
+        ]
+      ],
+      "lostReasonId": "zT46WSCPbudrq4zhWMk6",
+      "customFields": [
+        {
+          "id": "MgobCB14YMVKuE4Ka8p1",
+          "fieldValue": "string"
+        }
+      ],
+      "followers": [
+        [
+          null
+        ]
+      ]
     }
   ],
-  "total": 50,
-  "meta": { "nextPage": 2 }
+  "total": 100,
+  "aggregations": {}
 }
 ```
 
-## Errores
-| Status | Error | Causa frecuente | Solución |
-|--------|-------|-----------------|----------|
-| 401 | UNAUTHORIZED | Access Token inválido o expirado. | Refrescar acceso. |
-| 422 | UNPROCESSABLE | `locationId` no enviado. | Incluir locationId en body. |
+### Response Field Table
 
-## Ejemplo — Node.js SDK
-```typescript
-const result = await ghl.opportunities.search({
-  locationId: 'loc_abc123',
-  status: 'open'
+| Name | Type | Description |
+| :--- | :--- | :--- |
+| **opportunities** | `list` |  |
+| **total** | `int` |  |
+| **aggregations** | `dict` |  |
+
+### Error Codes
+
+| Status Code | Description |
+| :--- | :--- |
+| **400 Bad Request** | Invalid input parameters. |
+| **401 Unauthorized** | Invalid Token. |
+
+---
+
+## 4. CODE EXAMPLES
+
+### 1. CURL
+
+```bash
+curl --request POST \
+  --url https://services.leadconnectorhq.com/opportunities/search \
+  --header 'Authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'Version: 2021-07-28' \
+  --header 'Content-Type: application/json' \
+  --header 'Accept: application/json' \
+  --data '{
+  "locationId": "string",
+  "query": "string",
+  "limit": 123,
+  "page": 123,
+  "searchAfter": "string",
+  "additionalDetails": "string",
+  "notes": true,
+  "tasks": true,
+  "calendarEvents": true,
+  "unReadConversations": true
+}'
+```
+
+### 2. NODE SDK
+
+```javascript
+const { HighLevel } = require('@gohighlevel/api-client');
+
+const ghl = new HighLevel({
+  clientId: 'YOUR_CLIENT_ID',
+  clientSecret: 'YOUR_CLIENT_SECRET'
+});
+
+async function executeRequest() {
+  try {
+    const response = await ghl.api.request('POST', 'https://services.leadconnectorhq.com/opportunities/search', {
+      headers: { 'Version': '2021-07-28' },
+      body: {
+  "locationId": "string",
+  "query": "string",
+  "limit": 123,
+  "page": 123,
+  "searchAfter": "string",
+  "additionalDetails": "string",
+  "notes": true,
+  "tasks": true,
+  "calendarEvents": true,
+  "unReadConversations": true
+}
+    });
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+  }
+}
+```
+
+### 3. AXIOS
+
+```javascript
+const axios = require('axios');
+
+const config = {
+  method: 'post',
+  url: 'https://services.leadconnectorhq.com/opportunities/search',
+  headers: { 
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>', 
+    'Version': '2021-07-28', 
+    'Content-Type': 'application/json', 
+    'Accept': 'application/json'
+  },
+  data : {
+  "locationId": "string",
+  "query": "string",
+  "limit": 123,
+  "page": 123,
+  "searchAfter": "string",
+  "additionalDetails": "string",
+  "notes": true,
+  "tasks": true,
+  "calendarEvents": true,
+  "unReadConversations": true
+}
+};
+
+axios(config)
+.then(response => console.log(JSON.stringify(response.data)))
+.catch(error => console.log(error));
+```
+
+### 4. NATIVE NODE
+
+```javascript
+const https = require('follow-redirects').https;
+
+const options = {
+  'method': 'POST',
+  'hostname': 'services.leadconnectorhq.com',
+  'path': '/opportunities/search',
+  'headers': {
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  }
+};
+
+const req = https.request(options, (res) => {
+  let chunks = [];
+  res.on("data", (chunk) => chunks.push(chunk));
+  res.on("end", () => console.log(Buffer.concat(chunks).toString()));
+});
+
+req.write(JSON.stringify({
+  "locationId": "string",
+  "query": "string",
+  "limit": 123,
+  "page": 123,
+  "searchAfter": "string",
+  "additionalDetails": "string",
+  "notes": true,
+  "tasks": true,
+  "calendarEvents": true,
+  "unReadConversations": true
+}));
+req.end();
+```
+
+### 5. REQUEST NODE
+
+```javascript
+const request = require('request');
+
+const options = {
+  'method': 'POST',
+  'url': 'https://services.leadconnectorhq.com/opportunities/search',
+  'headers': {
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+  "locationId": "string",
+  "query": "string",
+  "limit": 123,
+  "page": 123,
+  "searchAfter": "string",
+  "additionalDetails": "string",
+  "notes": true,
+  "tasks": true,
+  "calendarEvents": true,
+  "unReadConversations": true
+})
+};
+
+request(options, (error, response) => {
+  if (error) throw new Error(error);
+  console.log(response.body);
 });
 ```
 
-## Ejemplo — cURL
-```bash
-curl -X POST \
-  'https://services.leadconnectorhq.com/opportunities/search' \
-  -H 'Authorization: Bearer YOUR_TOKEN' \
-  -H 'Version: 2021-07-28' \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "locationId": "loc_abc123",
-    "status": "open"
-  }'
+### 6. UNIREST NODE
+
+```javascript
+const unirest = require('unirest');
+
+unirest('POST', 'https://services.leadconnectorhq.com/opportunities/search')
+  .headers({
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json'
+  })
+  .send(JSON.stringify({
+  "locationId": "string",
+  "query": "string",
+  "limit": 123,
+  "page": 123,
+  "searchAfter": "string",
+  "additionalDetails": "string",
+  "notes": true,
+  "tasks": true,
+  "calendarEvents": true,
+  "unReadConversations": true
+}))
+  .end(res => console.log(res.raw_body));
 ```
 
-## Notas
-> Use este endpoint para construir Dashboards personalizados de ventas o motores de reporte de KPI comerciales.
+### 7. PYTHON
+
+```python
+import requests
+import json
+
+url = "https://services.leadconnectorhq.com/opportunities/search"
+headers = {
+  'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+  'Version': '2021-07-28',
+  'Content-Type': 'application/json'
+}
+response = requests.request("POST", url, headers=headers, data=json.dumps({
+  "locationId": "string",
+  "query": "string",
+  "limit": 123,
+  "page": 123,
+  "searchAfter": "string",
+  "additionalDetails": "string",
+  "notes": true,
+  "tasks": true,
+  "calendarEvents": true,
+  "unReadConversations": true
+}))
+print(response.text)
+```
+
+### 8. PHP
+
+```php
+<?php
+use GuzzleHttp\Client;
+$client = new Client();
+$headers = [
+  'Authorization' => 'Bearer <YOUR_ACCESS_TOKEN>',
+  'Version' => '2021-07-28',
+  'Content-Type' => 'application/json'
+];
+$response = $client->request('POST', 'https://services.leadconnectorhq.com/opportunities/search', [
+  'headers' => $headers,
+  'body' => '{
+  "locationId": "string",
+  "query": "string",
+  "limit": 123,
+  "page": 123,
+  "searchAfter": "string",
+  "additionalDetails": "string",
+  "notes": true,
+  "tasks": true,
+  "calendarEvents": true,
+  "unReadConversations": true
+}'
+]);
+echo $response->getBody();
+```
+
+### 9. JAVA
+
+```java
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+HttpClient client = HttpClient.newHttpClient();
+HttpRequest request = HttpRequest.newBuilder()
+    .uri(URI.create("https://services.leadconnectorhq.com/opportunities/search"))
+    .header("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+    .header("Version", "2021-07-28")
+    .header("Content-Type", "application/json")
+    .method("POST", HttpRequest.BodyPublishers.ofString("{
+  \"locationId\": \"string\",
+  \"query\": \"string\",
+  \"limit\": 123,
+  \"page\": 123,
+  \"searchAfter\": \"string\",
+  \"additionalDetails\": \"string\",
+  \"notes\": true,
+  \"tasks\": true,
+  \"calendarEvents\": true,
+  \"unReadConversations\": true
+}"))
+    .build();
+
+HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+System.out.println(response.body());
+```
+
+### 10. GO
+
+```go
+package main
+import (
+  "fmt"
+  "strings"
+  "net/http"
+  "io/ioutil"
+)
+func main() {
+  url := "https://services.leadconnectorhq.com/opportunities/search"
+  payload := strings.NewReader(`{
+  "locationId": "string",
+  "query": "string",
+  "limit": 123,
+  "page": 123,
+  "searchAfter": "string",
+  "additionalDetails": "string",
+  "notes": true,
+  "tasks": true,
+  "calendarEvents": true,
+  "unReadConversations": true
+}`)
+  req, _ := http.NewRequest("POST", url, payload)
+  req.Header.Add("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+  req.Header.Add("Version", "2021-07-28")
+  req.Header.Add("Content-Type", "application/json")
+  res, _ := http.DefaultClient.Do(req)
+  defer res.Body.Close()
+  body, _ := ioutil.ReadAll(res.Body)
+  fmt.Println(string(body))
+}
+```
+
+### 11. RUBY
+
+```ruby
+require 'net/http'
+require 'uri'
+require 'json'
+
+url = URI("https://services.leadconnectorhq.com/opportunities/search")
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+request = Net::HTTP::Post.new(url)
+request["Authorization"] = "Bearer <YOUR_ACCESS_TOKEN>"
+request["Version"] = "2021-07-28"
+request["Content-Type"] = "application/json"
+request.body = JSON.dump({
+  "locationId": "string",
+  "query": "string",
+  "limit": 123,
+  "page": 123,
+  "searchAfter": "string",
+  "additionalDetails": "string",
+  "notes": true,
+  "tasks": true,
+  "calendarEvents": true,
+  "unReadConversations": true
+})
+response = http.request(request)
+puts response.read_body
+```
+
+### 12. POWERSHELL
+
+```powershell
+$headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+$headers.Add("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+$headers.Add("Version", "2021-07-28")
+$headers.Add("Content-Type", "application/json")
+
+$body = '{
+  "locationId": "string",
+  "query": "string",
+  "limit": 123,
+  "page": 123,
+  "searchAfter": "string",
+  "additionalDetails": "string",
+  "notes": true,
+  "tasks": true,
+  "calendarEvents": true,
+  "unReadConversations": true
+}'
+
+$response = Invoke-RestMethod 'https://services.leadconnectorhq.com/opportunities/search' -Method 'POST' -Headers $headers -Body $body
+$response | ConvertTo-Json
+```
+
+---
+
+## 5. NOTES
+
+- Ensure the `Version: 2021-07-28` header is included.

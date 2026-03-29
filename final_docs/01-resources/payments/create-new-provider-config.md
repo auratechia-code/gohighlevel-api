@@ -1,0 +1,395 @@
+# Create new provider config
+
+---
+
+## 1. METADATA
+
+| Property | Value |
+| :--- | :--- |
+| **HTTP Method** | POST |
+| **Endpoint URL** | `https://services.leadconnectorhq.com/payments/custom-provider/connect` |
+| **Scopes Required** | `payments/custom-provider.write` |
+| **Authentication** | OAuth Access Token / Private Integration Token |
+| **Token Type** | Sub-Account Token |
+
+---
+
+## 2. REQUEST
+
+### Header Parameters
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| **Version** | `` | No |  |
+
+### Path Parameters
+
+N/A
+### Query Parameters
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| **locationId** | `` | No |  |
+
+### Body Parameters
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| **live** | `object` | Yes | Live config containing api-key and publishable key for live payments apiKey string required Api-key for custom payment provider config Example: y5ZQxryRFXZHvUJZdLeXXXXX publishableKey string required Publishable-key for custom payment provider config Example: rzp_test_zPRoVMLOa0XXXX |
+| **apiKey** | `string` | No |  |
+| **publishableKey** | `string` | No |  |
+| **test** | `object` | Yes | Test config containing api-key and publishable-key for test payments apiKey string required Api-key for custom payment provider config Example: y5ZQxryRFXZHvUJZdLeXXXXX publishableKey string required Publishable-key for custom payment provider config Example: rzp_test_zPRoVMLOa0XXXX |
+| **apiKey** | `string` | No |  |
+| **publishableKey** | `string` | No |  |
+
+---
+
+## 3. RESPONSE
+
+### Success Schema (200/201 OK)
+
+```json
+{
+  "name": "Company Paypal Integration",
+  "description": "This payment gateway supports payments in India via UPI, Net banking, cards and wallets.",
+  "paymentsUrl": "https://testpayment.paypal.com",
+  "queryUrl": "https://testsubscription.paypal.com",
+  "imageUrl": "https://testsubscription.paypal.com",
+  "_id": "662a44ad19a2a44d3cd9d749",
+  "locationId": "Lk3nlfk4lxlelVEwcW",
+  "marketplaceAppId": "65f0b217a05c774da7f1efa5",
+  "paymentProvider": "{ live: { liveMode: true }, test: { liveMode: false, apiKey: \"y5ZQxryRFXZHvUJZdLXXXXXX\", publishableKey: \"rzp_test_zPRoVMLOa0A9wo\" }}",
+  "deleted": true,
+  "createdAt": "2023-11-20T10:23:36.515Z",
+  "updatedAt": "2024-01-23T09:57:04.846Z",
+  "traceId": "302d2cf4-1ba0-4bf5-bc3b-f8fa76fda58a"
+}
+```
+
+### Response Field Table
+
+| Name | Type | Description |
+| :--- | :--- | :--- |
+| **name** | `str` |  |
+| **description** | `str` |  |
+| **paymentsUrl** | `str` |  |
+| **queryUrl** | `str` |  |
+| **imageUrl** | `str` |  |
+| **_id** | `str` |  |
+| **locationId** | `str` |  |
+| **marketplaceAppId** | `str` |  |
+| **paymentProvider** | `str` |  |
+| **deleted** | `bool` |  |
+| **createdAt** | `str` |  |
+| **updatedAt** | `str` |  |
+| **traceId** | `str` |  |
+
+### Error Codes
+
+| Status Code | Description |
+| :--- | :--- |
+| **400 Bad Request** | Invalid input parameters. |
+| **401 Unauthorized** | Invalid Token. |
+
+---
+
+## 4. CODE EXAMPLES
+
+### 1. CURL
+
+```bash
+curl --request POST \
+  --url https://services.leadconnectorhq.com/payments/custom-provider/connect \
+  --header 'Authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'Version: 2021-07-28' \
+  --header 'Content-Type: application/json' \
+  --header 'Accept: application/json' \
+  --data '{
+  "live": "string",
+  "apiKey": "string",
+  "publishableKey": "string",
+  "test": "string"
+}'
+```
+
+### 2. NODE SDK
+
+```javascript
+const { HighLevel } = require('@gohighlevel/api-client');
+
+const ghl = new HighLevel({
+  clientId: 'YOUR_CLIENT_ID',
+  clientSecret: 'YOUR_CLIENT_SECRET'
+});
+
+async function executeRequest() {
+  try {
+    const response = await ghl.api.request('POST', 'https://services.leadconnectorhq.com/payments/custom-provider/connect', {
+      headers: { 'Version': '2021-07-28' },
+      body: {
+  "live": "string",
+  "apiKey": "string",
+  "publishableKey": "string",
+  "test": "string"
+}
+    });
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+  }
+}
+```
+
+### 3. AXIOS
+
+```javascript
+const axios = require('axios');
+
+const config = {
+  method: 'post',
+  url: 'https://services.leadconnectorhq.com/payments/custom-provider/connect',
+  headers: { 
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>', 
+    'Version': '2021-07-28', 
+    'Content-Type': 'application/json', 
+    'Accept': 'application/json'
+  },
+  data : {
+  "live": "string",
+  "apiKey": "string",
+  "publishableKey": "string",
+  "test": "string"
+}
+};
+
+axios(config)
+.then(response => console.log(JSON.stringify(response.data)))
+.catch(error => console.log(error));
+```
+
+### 4. NATIVE NODE
+
+```javascript
+const https = require('follow-redirects').https;
+
+const options = {
+  'method': 'POST',
+  'hostname': 'services.leadconnectorhq.com',
+  'path': '/payments/custom-provider/connect',
+  'headers': {
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  }
+};
+
+const req = https.request(options, (res) => {
+  let chunks = [];
+  res.on("data", (chunk) => chunks.push(chunk));
+  res.on("end", () => console.log(Buffer.concat(chunks).toString()));
+});
+
+req.write(JSON.stringify({
+  "live": "string",
+  "apiKey": "string",
+  "publishableKey": "string",
+  "test": "string"
+}));
+req.end();
+```
+
+### 5. REQUEST NODE
+
+```javascript
+const request = require('request');
+
+const options = {
+  'method': 'POST',
+  'url': 'https://services.leadconnectorhq.com/payments/custom-provider/connect',
+  'headers': {
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+  "live": "string",
+  "apiKey": "string",
+  "publishableKey": "string",
+  "test": "string"
+})
+};
+
+request(options, (error, response) => {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+```
+
+### 6. UNIREST NODE
+
+```javascript
+const unirest = require('unirest');
+
+unirest('POST', 'https://services.leadconnectorhq.com/payments/custom-provider/connect')
+  .headers({
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json'
+  })
+  .send(JSON.stringify({
+  "live": "string",
+  "apiKey": "string",
+  "publishableKey": "string",
+  "test": "string"
+}))
+  .end(res => console.log(res.raw_body));
+```
+
+### 7. PYTHON
+
+```python
+import requests
+import json
+
+url = "https://services.leadconnectorhq.com/payments/custom-provider/connect"
+headers = {
+  'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+  'Version': '2021-07-28',
+  'Content-Type': 'application/json'
+}
+response = requests.request("POST", url, headers=headers, data=json.dumps({
+  "live": "string",
+  "apiKey": "string",
+  "publishableKey": "string",
+  "test": "string"
+}))
+print(response.text)
+```
+
+### 8. PHP
+
+```php
+<?php
+use GuzzleHttp\Client;
+$client = new Client();
+$headers = [
+  'Authorization' => 'Bearer <YOUR_ACCESS_TOKEN>',
+  'Version' => '2021-07-28',
+  'Content-Type' => 'application/json'
+];
+$response = $client->request('POST', 'https://services.leadconnectorhq.com/payments/custom-provider/connect', [
+  'headers' => $headers,
+  'body' => '{
+  "live": "string",
+  "apiKey": "string",
+  "publishableKey": "string",
+  "test": "string"
+}'
+]);
+echo $response->getBody();
+```
+
+### 9. JAVA
+
+```java
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+HttpClient client = HttpClient.newHttpClient();
+HttpRequest request = HttpRequest.newBuilder()
+    .uri(URI.create("https://services.leadconnectorhq.com/payments/custom-provider/connect"))
+    .header("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+    .header("Version", "2021-07-28")
+    .header("Content-Type", "application/json")
+    .method("POST", HttpRequest.BodyPublishers.ofString("{
+  \"live\": \"string\",
+  \"apiKey\": \"string\",
+  \"publishableKey\": \"string\",
+  \"test\": \"string\"
+}"))
+    .build();
+
+HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+System.out.println(response.body());
+```
+
+### 10. GO
+
+```go
+package main
+import (
+  "fmt"
+  "strings"
+  "net/http"
+  "io/ioutil"
+)
+func main() {
+  url := "https://services.leadconnectorhq.com/payments/custom-provider/connect"
+  payload := strings.NewReader(`{
+  "live": "string",
+  "apiKey": "string",
+  "publishableKey": "string",
+  "test": "string"
+}`)
+  req, _ := http.NewRequest("POST", url, payload)
+  req.Header.Add("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+  req.Header.Add("Version", "2021-07-28")
+  req.Header.Add("Content-Type", "application/json")
+  res, _ := http.DefaultClient.Do(req)
+  defer res.Body.Close()
+  body, _ := ioutil.ReadAll(res.Body)
+  fmt.Println(string(body))
+}
+```
+
+### 11. RUBY
+
+```ruby
+require 'net/http'
+require 'uri'
+require 'json'
+
+url = URI("https://services.leadconnectorhq.com/payments/custom-provider/connect")
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+request = Net::HTTP::Post.new(url)
+request["Authorization"] = "Bearer <YOUR_ACCESS_TOKEN>"
+request["Version"] = "2021-07-28"
+request["Content-Type"] = "application/json"
+request.body = JSON.dump({
+  "live": "string",
+  "apiKey": "string",
+  "publishableKey": "string",
+  "test": "string"
+})
+response = http.request(request)
+puts response.read_body
+```
+
+### 12. POWERSHELL
+
+```powershell
+$headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+$headers.Add("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+$headers.Add("Version", "2021-07-28")
+$headers.Add("Content-Type", "application/json")
+
+$body = '{
+  "live": "string",
+  "apiKey": "string",
+  "publishableKey": "string",
+  "test": "string"
+}'
+
+$response = Invoke-RestMethod 'https://services.leadconnectorhq.com/payments/custom-provider/connect' -Method 'POST' -Headers $headers -Body $body
+$response | ConvertTo-Json
+```
+
+---
+
+## 5. NOTES
+
+- Ensure the `Version: 2021-07-28` header is included.

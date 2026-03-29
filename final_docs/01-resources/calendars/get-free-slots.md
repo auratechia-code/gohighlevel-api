@@ -1,33 +1,52 @@
-# GET Get Free Slots
+# Get Free Slots
 
-**Ruta:** `GET /calendars/{calendarId}/free-slots`
-**Autenticación:** OAuth 2.0 / Private Integration Token
-**Scopes requeridos:** `calendars.readonly`
-**Rate limit:** Estándar (100 req/10s burst — 200k/día)
+---
 
-## Descripción
-Devuelve todos los horarios disponibles (slots) para un calendario específico dentro de un rango de fechas. Permite filtrar por zona horaria y usuario asignado.
+## 1. METADATA
 
-## Headers
-| Header        | Tipo   | Requerido | Valor             |
-|---------------|--------|-----------|-------------------|
-| Authorization | string | ✅        | Bearer {token}    |
-| Version       | string | ✅        | 2021-07-28        |
+| Property | Value |
+| :--- | :--- |
+| **HTTP Method** | GET |
+| **Endpoint URL** | `https://services.leadconnectorhq.com/calendars/:calendarId/free-slots` |
+| **Scopes Required** | `calendars.readonly` |
+| **Authentication** | OAuth Access Token / Private Integration Token |
+| **Token Type** | Sub-Account Token |
 
-## Path Parameters
-| Campo | Tipo | Requerido | Descripción |
-|-------|------|-----------|-------------|
-| `calendarId` | string | ✅ | ID único del calendario. |
+---
 
-## Query Parameters
-| Campo | Tipo | Requerido | Descripción |
-|-------|------|-----------|-------------|
-| `startDate` | number | ✅ | Timestamp Unix (milisegundos) de inicio. |
-| `endDate` | number | ✅ | Timestamp Unix (milisegundos) de fin. |
-| `timezone` | string | ❌ | Zona horaria deseada (ej. `America/New_York`). |
-| `userId` | string | ❌ | Filtrar por disponibilidad de un usuario específico. |
+## 2. REQUEST
 
-## Response 200
+### Header Parameters
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| **Version** | `` | No |  |
+
+### Path Parameters
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| **calendarId** | `` | No |  |
+
+### Query Parameters
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| **startDate** | `` | Yes | endDate number required End Date ( ⚠️ Important: Date range cannot be more than 31 days) Example: 1601490599999 |
+| **endDate** | `` | No | timezone string The timezone in which the free slots are returned Example: America/Chihuahua |
+| **timezone** | `` | No | userId string The user for whom the free slots are returned Example: 082goXVW3lIExEQPOnd3 |
+| **userId** | `` | No | userIds string[] The users for whom the free slots are returned |
+| **userIds** | `` | No |  |
+
+### Body Parameters
+
+N/A
+---
+
+## 3. RESPONSE
+
+### Success Schema (200/201 OK)
+
 ```json
 {
   "2024-10-28": {
@@ -38,35 +57,266 @@ Devuelve todos los horarios disponibles (slots) para un calendario específico d
   },
   "2024-10-29": {
     "slots": [
-      "2024-10-29T10:00:00-05:00"
+      "2024-10-29T10:00:00-05:00",
+      "2024-10-29T14:30:00-05:00"
     ]
   }
 }
 ```
 
-## Errores
-| Status | Error | Causa frecuente | Solución |
-|--------|-------|-----------------|----------|
-| 401 | UNAUTHORIZED | Token no válido. | Refrescar acceso. |
-| 404 | NOT_FOUND | `calendarId` no existe. | Verificar el ID del calendario. |
+### Response Field Table
 
-## Ejemplo — Node.js SDK
-```typescript
-const slots = await ghl.calendars.getFreeSlots('cal_abc', {
-  startDate: 1711718400000,
-  endDate: 1711804800000
+| Name | Type | Description |
+| :--- | :--- | :--- |
+| **2024-10-28** | `dict` |  |
+| **2024-10-29** | `dict` |  |
+
+### Error Codes
+
+| Status Code | Description |
+| :--- | :--- |
+| **400 Bad Request** | Invalid input parameters. |
+| **401 Unauthorized** | Invalid Token. |
+
+---
+
+## 4. CODE EXAMPLES
+
+### 1. CURL
+
+```bash
+curl --request GET \
+  --url https://services.leadconnectorhq.com/calendars/:calendarId/free-slots \
+  --header 'Authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'Version: 2021-07-28' \
+  --header 'Content-Type: application/json' \
+  --header 'Accept: application/json' \
+  --data '{}'
+```
+
+### 2. NODE SDK
+
+```javascript
+const { HighLevel } = require('@gohighlevel/api-client');
+
+const ghl = new HighLevel({
+  clientId: 'YOUR_CLIENT_ID',
+  clientSecret: 'YOUR_CLIENT_SECRET'
+});
+
+async function executeRequest() {
+  try {
+    const response = await ghl.api.request('GET', 'https://services.leadconnectorhq.com/calendars/:calendarId/free-slots', {
+      headers: { 'Version': '2021-07-28' },
+      body: {}
+    });
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+  }
+}
+```
+
+### 3. AXIOS
+
+```javascript
+const axios = require('axios');
+
+const config = {
+  method: 'get',
+  url: 'https://services.leadconnectorhq.com/calendars/:calendarId/free-slots',
+  headers: { 
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>', 
+    'Version': '2021-07-28', 
+    'Content-Type': 'application/json', 
+    'Accept': 'application/json'
+  },
+  data : {}
+};
+
+axios(config)
+.then(response => console.log(JSON.stringify(response.data)))
+.catch(error => console.log(error));
+```
+
+### 4. NATIVE NODE
+
+```javascript
+const https = require('follow-redirects').https;
+
+const options = {
+  'method': 'GET',
+  'hostname': 'services.leadconnectorhq.com',
+  'path': '/calendars/:calendarId/free-slots',
+  'headers': {
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  }
+};
+
+const req = https.request(options, (res) => {
+  let chunks = [];
+  res.on("data", (chunk) => chunks.push(chunk));
+  res.on("end", () => console.log(Buffer.concat(chunks).toString()));
+});
+
+req.write(JSON.stringify({}));
+req.end();
+```
+
+### 5. REQUEST NODE
+
+```javascript
+const request = require('request');
+
+const options = {
+  'method': 'GET',
+  'url': 'https://services.leadconnectorhq.com/calendars/:calendarId/free-slots',
+  'headers': {
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({})
+};
+
+request(options, (error, response) => {
+  if (error) throw new Error(error);
+  console.log(response.body);
 });
 ```
 
-## Ejemplo — cURL
-```bash
-curl -G \
-  'https://services.leadconnectorhq.com/calendars/cal_abc/free-slots' \
-  -H 'Authorization: Bearer YOUR_TOKEN' \
-  -H 'Version: 2021-07-28' \
-  -d 'startDate=1711718400000' \
-  -d 'endDate=1711804800000'
+### 6. UNIREST NODE
+
+```javascript
+const unirest = require('unirest');
+
+unirest('GET', 'https://services.leadconnectorhq.com/calendars/:calendarId/free-slots')
+  .headers({
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json'
+  })
+  .send(JSON.stringify({}))
+  .end(res => console.log(res.raw_body));
 ```
 
-## Notas
-> La respuesta está agrupada por fecha. Útil para construir interfaces de reserva personalizadas (custom booking widgets).
+### 7. PYTHON
+
+```python
+import requests
+import json
+
+url = "https://services.leadconnectorhq.com/calendars/:calendarId/free-slots"
+headers = {
+  'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+  'Version': '2021-07-28',
+  'Content-Type': 'application/json'
+}
+response = requests.request("GET", url, headers=headers, data=json.dumps({}))
+print(response.text)
+```
+
+### 8. PHP
+
+```php
+<?php
+use GuzzleHttp\Client;
+$client = new Client();
+$headers = [
+  'Authorization' => 'Bearer <YOUR_ACCESS_TOKEN>',
+  'Version' => '2021-07-28',
+  'Content-Type' => 'application/json'
+];
+$response = $client->request('GET', 'https://services.leadconnectorhq.com/calendars/:calendarId/free-slots', [
+  'headers' => $headers,
+  'body' => '{}'
+]);
+echo $response->getBody();
+```
+
+### 9. JAVA
+
+```java
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+HttpClient client = HttpClient.newHttpClient();
+HttpRequest request = HttpRequest.newBuilder()
+    .uri(URI.create("https://services.leadconnectorhq.com/calendars/:calendarId/free-slots"))
+    .header("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+    .header("Version", "2021-07-28")
+    .header("Content-Type", "application/json")
+    .method("GET", HttpRequest.BodyPublishers.ofString("{}"))
+    .build();
+
+HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+System.out.println(response.body());
+```
+
+### 10. GO
+
+```go
+package main
+import (
+  "fmt"
+  "strings"
+  "net/http"
+  "io/ioutil"
+)
+func main() {
+  url := "https://services.leadconnectorhq.com/calendars/:calendarId/free-slots"
+  payload := strings.NewReader(`{}`)
+  req, _ := http.NewRequest("GET", url, payload)
+  req.Header.Add("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+  req.Header.Add("Version", "2021-07-28")
+  req.Header.Add("Content-Type", "application/json")
+  res, _ := http.DefaultClient.Do(req)
+  defer res.Body.Close()
+  body, _ := ioutil.ReadAll(res.Body)
+  fmt.Println(string(body))
+}
+```
+
+### 11. RUBY
+
+```ruby
+require 'net/http'
+require 'uri'
+require 'json'
+
+url = URI("https://services.leadconnectorhq.com/calendars/:calendarId/free-slots")
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+request = Net::HTTP::Get.new(url)
+request["Authorization"] = "Bearer <YOUR_ACCESS_TOKEN>"
+request["Version"] = "2021-07-28"
+request["Content-Type"] = "application/json"
+request.body = JSON.dump({})
+response = http.request(request)
+puts response.read_body
+```
+
+### 12. POWERSHELL
+
+```powershell
+$headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+$headers.Add("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+$headers.Add("Version", "2021-07-28")
+$headers.Add("Content-Type", "application/json")
+
+$body = '{}'
+
+$response = Invoke-RestMethod 'https://services.leadconnectorhq.com/calendars/:calendarId/free-slots' -Method 'GET' -Headers $headers -Body $body
+$response | ConvertTo-Json
+```
+
+---
+
+## 5. NOTES
+
+- Ensure the `Version: 2021-07-28` header is included.

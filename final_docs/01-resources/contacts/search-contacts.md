@@ -1,86 +1,322 @@
-# POST Search Contacts (Advanced)
+# Search Contacts
 
-**Ruta:** `POST /contacts/search`
-**Autenticación:** OAuth 2.0 / Private Integration Token
-**Scopes requeridos:** `contacts.readonly`
-**Rate limit:** Estándar (100 req/10s burst — 200k/día)
+---
 
-## Descripción
-Permite buscar y filtrar contactos utilizando criterios avanzados como tags, campos personalizados, fechas de creación y más. Este endpoint es preferible sobre el GET tradicional para segmentaciones complejas.
+## 1. METADATA
 
-## Headers
-| Header        | Tipo   | Requerido | Valor             |
-|---------------|--------|-----------|-------------------|
-| Authorization | string | ✅        | Bearer {token}    |
-| Version       | string | ✅        | 2021-07-28        |
-| Content-Type  | string | ✅        | application/json |
+| Property | Value |
+| :--- | :--- |
+| **HTTP Method** | POST |
+| **Endpoint URL** | `https://services.leadconnectorhq.com/contacts/search` |
+| **Scopes Required** | `contacts.readonly` |
+| **Authentication** | OAuth Access Token / Private Integration Token |
+| **Token Type** | Sub-Account Token |
 
-## Path Parameters
-*(Ninguno)*
+---
 
-## Query Parameters
-*(Ninguno)*
+## 2. REQUEST
 
-## Request Body
+### Header Parameters
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| **Version** | `` | No |  |
+
+### Path Parameters
+
+N/A
+### Query Parameters
+
+N/A
+### Body Parameters
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| **** | `object` | No |  |
+
+---
+
+## 3. RESPONSE
+
+### Success Schema (200/201 OK)
+
 ```json
-{
-  "locationId": "string — ID de la ubicación (REQUERIDO)",
-  "filters": [
-    {
-      "field": "string — Nombre del campo",
-      "operator": "string — Operador (eq, ne, inc, etc.)",
-      "value": "any — Valor a filtrar"
-    }
-  ],
-  "sort": "string — Campo de ordenación",
-  "limit": "number — Cantidad de resultados",
-  "page": "number — Número de página"
-}
+{}
 ```
 
-> ⚠️ **PENDIENTE**: Los parámetros detallados del body para filtros avanzados están documentados externamente por GoHighLevel debido a su complejidad.
-> **Doc Oficial Adicional:** [ClickUp Documentation Link](https://doc.clickup.com/8631005/d/h/87cpx-158396/6e629989abe7fad)
+### Response Field Table
 
-## Response 200
-```json
-{
-  "contacts": [
-    { "id": "abc123", "email": "test@test.com" }
-  ],
-  "meta": {
-    "total": 1250,
-    "nextPage": 2
+N/A
+### Error Codes
+
+| Status Code | Description |
+| :--- | :--- |
+| **400 Bad Request** | Invalid input parameters. |
+| **401 Unauthorized** | Invalid Token. |
+
+---
+
+## 4. CODE EXAMPLES
+
+### 1. CURL
+
+```bash
+curl --request POST \
+  --url https://services.leadconnectorhq.com/contacts/search \
+  --header 'Authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'Version: 2021-07-28' \
+  --header 'Content-Type: application/json' \
+  --header 'Accept: application/json' \
+  --data '{
+  "": "string"
+}'
+```
+
+### 2. NODE SDK
+
+```javascript
+const { HighLevel } = require('@gohighlevel/api-client');
+
+const ghl = new HighLevel({
+  clientId: 'YOUR_CLIENT_ID',
+  clientSecret: 'YOUR_CLIENT_SECRET'
+});
+
+async function executeRequest() {
+  try {
+    const response = await ghl.api.request('POST', 'https://services.leadconnectorhq.com/contacts/search', {
+      headers: { 'Version': '2021-07-28' },
+      body: {
+  "": "string"
+}
+    });
+    console.log(response);
+  } catch (error) {
+    console.error(error);
   }
 }
 ```
 
-## Errores
-| Status | Error | Causa frecuente | Solución |
-|--------|-------|-----------------|----------|
-| 400 | BAD_REQUEST | Operador de filtro no soportado. | Revisar ClickUp doc. |
-| 401 | UNAUTHORIZED | Token inválido. | Refrescar token. |
-| 422 | UNPROCESSABLE | `locationId` faltante. | Incluir locationId en body. |
+### 3. AXIOS
 
-## Ejemplo — Node.js SDK
-```typescript
-const result = await ghl.contacts.search({
-  locationId: 'loc_abc123',
-  filters: [{ field: 'email', operator: 'eq', value: 'juan@perez.com' }]
+```javascript
+const axios = require('axios');
+
+const config = {
+  method: 'post',
+  url: 'https://services.leadconnectorhq.com/contacts/search',
+  headers: { 
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>', 
+    'Version': '2021-07-28', 
+    'Content-Type': 'application/json', 
+    'Accept': 'application/json'
+  },
+  data : {
+  "": "string"
+}
+};
+
+axios(config)
+.then(response => console.log(JSON.stringify(response.data)))
+.catch(error => console.log(error));
+```
+
+### 4. NATIVE NODE
+
+```javascript
+const https = require('follow-redirects').https;
+
+const options = {
+  'method': 'POST',
+  'hostname': 'services.leadconnectorhq.com',
+  'path': '/contacts/search',
+  'headers': {
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  }
+};
+
+const req = https.request(options, (res) => {
+  let chunks = [];
+  res.on("data", (chunk) => chunks.push(chunk));
+  res.on("end", () => console.log(Buffer.concat(chunks).toString()));
+});
+
+req.write(JSON.stringify({
+  "": "string"
+}));
+req.end();
+```
+
+### 5. REQUEST NODE
+
+```javascript
+const request = require('request');
+
+const options = {
+  'method': 'POST',
+  'url': 'https://services.leadconnectorhq.com/contacts/search',
+  'headers': {
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+  "": "string"
+})
+};
+
+request(options, (error, response) => {
+  if (error) throw new Error(error);
+  console.log(response.body);
 });
 ```
 
-## Ejemplo — cURL
-```bash
-curl -X POST \
-  'https://services.leadconnectorhq.com/contacts/search' \
-  -H 'Authorization: Bearer YOUR_TOKEN' \
-  -H 'Version: 2021-07-28' \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "locationId": "loc_abc123",
-    "filters": []
-  }'
+### 6. UNIREST NODE
+
+```javascript
+const unirest = require('unirest');
+
+unirest('POST', 'https://services.leadconnectorhq.com/contacts/search')
+  .headers({
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json'
+  })
+  .send(JSON.stringify({
+  "": "string"
+}))
+  .end(res => console.log(res.raw_body));
 ```
 
-## Notas
-> Este endpoint es altamente potente para integraciones de sincronización de bases de datos y creación de audiencias para IAs.
+### 7. PYTHON
+
+```python
+import requests
+import json
+
+url = "https://services.leadconnectorhq.com/contacts/search"
+headers = {
+  'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+  'Version': '2021-07-28',
+  'Content-Type': 'application/json'
+}
+response = requests.request("POST", url, headers=headers, data=json.dumps({
+  "": "string"
+}))
+print(response.text)
+```
+
+### 8. PHP
+
+```php
+<?php
+use GuzzleHttp\Client;
+$client = new Client();
+$headers = [
+  'Authorization' => 'Bearer <YOUR_ACCESS_TOKEN>',
+  'Version' => '2021-07-28',
+  'Content-Type' => 'application/json'
+];
+$response = $client->request('POST', 'https://services.leadconnectorhq.com/contacts/search', [
+  'headers' => $headers,
+  'body' => '{
+  "": "string"
+}'
+]);
+echo $response->getBody();
+```
+
+### 9. JAVA
+
+```java
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+HttpClient client = HttpClient.newHttpClient();
+HttpRequest request = HttpRequest.newBuilder()
+    .uri(URI.create("https://services.leadconnectorhq.com/contacts/search"))
+    .header("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+    .header("Version", "2021-07-28")
+    .header("Content-Type", "application/json")
+    .method("POST", HttpRequest.BodyPublishers.ofString("{
+  \"\": \"string\"
+}"))
+    .build();
+
+HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+System.out.println(response.body());
+```
+
+### 10. GO
+
+```go
+package main
+import (
+  "fmt"
+  "strings"
+  "net/http"
+  "io/ioutil"
+)
+func main() {
+  url := "https://services.leadconnectorhq.com/contacts/search"
+  payload := strings.NewReader(`{
+  "": "string"
+}`)
+  req, _ := http.NewRequest("POST", url, payload)
+  req.Header.Add("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+  req.Header.Add("Version", "2021-07-28")
+  req.Header.Add("Content-Type", "application/json")
+  res, _ := http.DefaultClient.Do(req)
+  defer res.Body.Close()
+  body, _ := ioutil.ReadAll(res.Body)
+  fmt.Println(string(body))
+}
+```
+
+### 11. RUBY
+
+```ruby
+require 'net/http'
+require 'uri'
+require 'json'
+
+url = URI("https://services.leadconnectorhq.com/contacts/search")
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+request = Net::HTTP::Post.new(url)
+request["Authorization"] = "Bearer <YOUR_ACCESS_TOKEN>"
+request["Version"] = "2021-07-28"
+request["Content-Type"] = "application/json"
+request.body = JSON.dump({
+  "": "string"
+})
+response = http.request(request)
+puts response.read_body
+```
+
+### 12. POWERSHELL
+
+```powershell
+$headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+$headers.Add("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+$headers.Add("Version", "2021-07-28")
+$headers.Add("Content-Type", "application/json")
+
+$body = '{
+  "": "string"
+}'
+
+$response = Invoke-RestMethod 'https://services.leadconnectorhq.com/contacts/search' -Method 'POST' -Headers $headers -Body $body
+$response | ConvertTo-Json
+```
+
+---
+
+## 5. NOTES
+
+- Ensure the `Version: 2021-07-28` header is included.

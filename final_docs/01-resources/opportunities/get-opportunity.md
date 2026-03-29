@@ -1,76 +1,357 @@
-# GET Get Opportunity
+# Get Opportunity
 
-**Ruta:** `GET /opportunities/{opportunityId}`
-**Autenticación:** OAuth 2.0 / Private Integration Token
-**Scopes requeridos:** `opportunities.readonly`
-**Rate limit:** Estándar (100 req/10s burst — 200k/día)
+---
 
-## Descripción
-Recupera los detalles completos de una oportunidad, incluyendo su estado actual, valor monetario, pipeline, etapa y los datos básicos del contacto asociado.
+## 1. METADATA
 
-## Headers
-| Header        | Tipo   | Requerido | Valor             |
-|---------------|--------|-----------|-------------------|
-| Authorization | string | ✅        | Bearer {token}    |
-| Version       | string | ✅        | 2021-07-28        |
+| Property | Value |
+| :--- | :--- |
+| **HTTP Method** | GET |
+| **Endpoint URL** | `https://services.leadconnectorhq.com/opportunities/:id` |
+| **Scopes Required** | `opportunities.readonly` |
+| **Authentication** | OAuth Access Token / Private Integration Token |
+| **Token Type** | Sub-Account Token |
 
-## Path Parameters
-| Campo | Tipo | Requerido | Descripción |
-|-------|------|-----------|-------------|
-| `opportunityId` | string | ✅ | ID único de la oportunidad a recuperar. |
+---
 
-## Query Parameters
-*(Ninguno)*
+## 2. REQUEST
 
-## Request Body
-*(No requerido para GET)*
+### Header Parameters
 
-## Response 200
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| **Version** | `` | No |  |
+
+### Path Parameters
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| **id** | `` | No |  |
+
+### Query Parameters
+
+N/A
+### Body Parameters
+
+N/A
+---
+
+## 3. RESPONSE
+
+### Success Schema (200/201 OK)
+
 ```json
 {
   "opportunity": {
-    "id": "opp_123",
-    "name": "Testing Opportunity",
+    "id": "yWQobCRIhRguQtD2llvk",
+    "name": "testing",
     "monetaryValue": 500,
-    "pipelineId": "pip_456",
-    "pipelineStageId": "stage_789",
+    "pipelineId": "VDm7RPYC2GLUvdpKmBfC",
+    "pipelineStageId": "e93ba61a-53b3-45e7-985a-c7732dbcdb69",
+    "assignedTo": "zT46WSCPbudrq4zhWMk6",
     "status": "open",
-    "contactId": "cnt_001",
-    "locationId": "loc_abc",
+    "source": "",
+    "lastStatusChangeAt": "2021-08-03T04:55:17.355Z",
+    "lastStageChangeAt": "2021-08-03T04:55:17.355Z",
+    "lastActionDate": "2021-08-03T04:55:17.355Z",
+    "indexVersion": 1,
+    "createdAt": "2021-08-03T04:55:17.355Z",
+    "updatedAt": "2021-08-03T04:55:17.355Z",
+    "contactId": "zT46WSCPbudrq4zhWMk6",
+    "locationId": "zT46WSCPbudrq4zhW",
     "contact": {
-      "id": "cnt_001",
-      "name": "John Doe",
-      "email": "john@doe.com",
-      "phone": "+12025550107"
+      "id": "byMEV0NQinDhq8ZfiOi2",
+      "name": "John Deo",
+      "companyName": "Tesla Inc",
+      "email": "john@deo.com",
+      "phone": "+1202-555-0107",
+      "tags": [
+        "string"
+      ]
     },
-    "customFields": [
-      { "id": "field_1", "fieldValue": "value_1" }
+    "notes": [
+      [
+        null
+      ]
     ],
-    "createdAt": "2024-03-29T12:00:00Z",
-    "updatedAt": "2024-03-29T13:00:00Z"
+    "tasks": [
+      [
+        null
+      ]
+    ],
+    "calendarEvents": [
+      [
+        null
+      ]
+    ],
+    "lostReasonId": "zT46WSCPbudrq4zhWMk6",
+    "customFields": [
+      {
+        "id": "MgobCB14YMVKuE4Ka8p1",
+        "fieldValue": "string"
+      }
+    ],
+    "followers": [
+      [
+        null
+      ]
+    ]
   }
 }
 ```
 
-## Errores
-| Status | Error | Causa frecuente | Solución |
-|--------|-------|-----------------|----------|
-| 401 | UNAUTHORIZED | Access Token inválido. | Refrescar token. |
-| 404 | NOT_FOUND | La oportunidad no existe. | Verificar `opportunityId`. |
-| 429 | RATE_LIMIT | Límite de ráfaga excedido. | Esperar 10 segundos. |
+### Response Field Table
 
-## Ejemplo — Node.js SDK
-```typescript
-const result = await ghl.opportunities.get('opp_123');
-```
+| Name | Type | Description |
+| :--- | :--- | :--- |
+| **opportunity** | `dict` |  |
 
-## Ejemplo — cURL
+### Error Codes
+
+| Status Code | Description |
+| :--- | :--- |
+| **400 Bad Request** | Invalid input parameters. |
+| **401 Unauthorized** | Invalid Token. |
+
+---
+
+## 4. CODE EXAMPLES
+
+### 1. CURL
+
 ```bash
-curl -G \
-  'https://services.leadconnectorhq.com/opportunities/opp_123' \
-  -H 'Authorization: Bearer YOUR_TOKEN' \
-  -H 'Version: 2021-07-28'
+curl --request GET \
+  --url https://services.leadconnectorhq.com/opportunities/:id \
+  --header 'Authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'Version: 2021-07-28' \
+  --header 'Content-Type: application/json' \
+  --header 'Accept: application/json' \
+  --data '{}'
 ```
 
-## Notas
-> Devuelve un objeto anidado `contact` con los datos esenciales. Para la información extendida del contacto, utilice el endpoint de Contactos.
+### 2. NODE SDK
+
+```javascript
+const { HighLevel } = require('@gohighlevel/api-client');
+
+const ghl = new HighLevel({
+  clientId: 'YOUR_CLIENT_ID',
+  clientSecret: 'YOUR_CLIENT_SECRET'
+});
+
+async function executeRequest() {
+  try {
+    const response = await ghl.api.request('GET', 'https://services.leadconnectorhq.com/opportunities/:id', {
+      headers: { 'Version': '2021-07-28' },
+      body: {}
+    });
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+  }
+}
+```
+
+### 3. AXIOS
+
+```javascript
+const axios = require('axios');
+
+const config = {
+  method: 'get',
+  url: 'https://services.leadconnectorhq.com/opportunities/:id',
+  headers: { 
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>', 
+    'Version': '2021-07-28', 
+    'Content-Type': 'application/json', 
+    'Accept': 'application/json'
+  },
+  data : {}
+};
+
+axios(config)
+.then(response => console.log(JSON.stringify(response.data)))
+.catch(error => console.log(error));
+```
+
+### 4. NATIVE NODE
+
+```javascript
+const https = require('follow-redirects').https;
+
+const options = {
+  'method': 'GET',
+  'hostname': 'services.leadconnectorhq.com',
+  'path': '/opportunities/:id',
+  'headers': {
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  }
+};
+
+const req = https.request(options, (res) => {
+  let chunks = [];
+  res.on("data", (chunk) => chunks.push(chunk));
+  res.on("end", () => console.log(Buffer.concat(chunks).toString()));
+});
+
+req.write(JSON.stringify({}));
+req.end();
+```
+
+### 5. REQUEST NODE
+
+```javascript
+const request = require('request');
+
+const options = {
+  'method': 'GET',
+  'url': 'https://services.leadconnectorhq.com/opportunities/:id',
+  'headers': {
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({})
+};
+
+request(options, (error, response) => {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+```
+
+### 6. UNIREST NODE
+
+```javascript
+const unirest = require('unirest');
+
+unirest('GET', 'https://services.leadconnectorhq.com/opportunities/:id')
+  .headers({
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json'
+  })
+  .send(JSON.stringify({}))
+  .end(res => console.log(res.raw_body));
+```
+
+### 7. PYTHON
+
+```python
+import requests
+import json
+
+url = "https://services.leadconnectorhq.com/opportunities/:id"
+headers = {
+  'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+  'Version': '2021-07-28',
+  'Content-Type': 'application/json'
+}
+response = requests.request("GET", url, headers=headers, data=json.dumps({}))
+print(response.text)
+```
+
+### 8. PHP
+
+```php
+<?php
+use GuzzleHttp\Client;
+$client = new Client();
+$headers = [
+  'Authorization' => 'Bearer <YOUR_ACCESS_TOKEN>',
+  'Version' => '2021-07-28',
+  'Content-Type' => 'application/json'
+];
+$response = $client->request('GET', 'https://services.leadconnectorhq.com/opportunities/:id', [
+  'headers' => $headers,
+  'body' => '{}'
+]);
+echo $response->getBody();
+```
+
+### 9. JAVA
+
+```java
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+HttpClient client = HttpClient.newHttpClient();
+HttpRequest request = HttpRequest.newBuilder()
+    .uri(URI.create("https://services.leadconnectorhq.com/opportunities/:id"))
+    .header("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+    .header("Version", "2021-07-28")
+    .header("Content-Type", "application/json")
+    .method("GET", HttpRequest.BodyPublishers.ofString("{}"))
+    .build();
+
+HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+System.out.println(response.body());
+```
+
+### 10. GO
+
+```go
+package main
+import (
+  "fmt"
+  "strings"
+  "net/http"
+  "io/ioutil"
+)
+func main() {
+  url := "https://services.leadconnectorhq.com/opportunities/:id"
+  payload := strings.NewReader(`{}`)
+  req, _ := http.NewRequest("GET", url, payload)
+  req.Header.Add("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+  req.Header.Add("Version", "2021-07-28")
+  req.Header.Add("Content-Type", "application/json")
+  res, _ := http.DefaultClient.Do(req)
+  defer res.Body.Close()
+  body, _ := ioutil.ReadAll(res.Body)
+  fmt.Println(string(body))
+}
+```
+
+### 11. RUBY
+
+```ruby
+require 'net/http'
+require 'uri'
+require 'json'
+
+url = URI("https://services.leadconnectorhq.com/opportunities/:id")
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+request = Net::HTTP::Get.new(url)
+request["Authorization"] = "Bearer <YOUR_ACCESS_TOKEN>"
+request["Version"] = "2021-07-28"
+request["Content-Type"] = "application/json"
+request.body = JSON.dump({})
+response = http.request(request)
+puts response.read_body
+```
+
+### 12. POWERSHELL
+
+```powershell
+$headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+$headers.Add("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+$headers.Add("Version", "2021-07-28")
+$headers.Add("Content-Type", "application/json")
+
+$body = '{}'
+
+$response = Invoke-RestMethod 'https://services.leadconnectorhq.com/opportunities/:id' -Method 'GET' -Headers $headers -Body $body
+$response | ConvertTo-Json
+```
+
+---
+
+## 5. NOTES
+
+- Ensure the `Version: 2021-07-28` header is included.

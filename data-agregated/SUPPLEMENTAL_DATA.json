@@ -1,0 +1,286 @@
+{
+  "body_params": {
+    "POST /calendars/events/appointments": [
+      {
+        "name": "title",
+        "type": "String",
+        "required": true,
+        "description": "Title for the appointment."
+      },
+      {
+        "name": "calendarId",
+        "type": "String",
+        "required": true,
+        "description": "The unique ID of the calendar."
+      },
+      {
+        "name": "contactId",
+        "type": "String",
+        "required": true,
+        "description": "The unique ID of the contact."
+      },
+      {
+        "name": "startTime",
+        "type": "String",
+        "required": true,
+        "description": "ISO 8601 formatted start date/time."
+      },
+      {
+        "name": "endTime",
+        "type": "String",
+        "required": false,
+        "description": "ISO 8601 formatted end date/time."
+      },
+      {
+        "name": "locationId",
+        "type": "String",
+        "required": false,
+        "description": "The unique ID of the location."
+      },
+      {
+        "name": "appointmentStatus",
+        "type": "String",
+        "required": false,
+        "description": "Initial status: `confirmed`, `unconfirmed`."
+      },
+      {
+        "name": "assignedUserId",
+        "type": "String",
+        "required": false,
+        "description": "The unique ID of the assigned user."
+      },
+      {
+        "name": "meetingLocationType",
+        "type": "String",
+        "required": false,
+        "description": "Type of meeting location (e.g., `Custom`)."
+      },
+      {
+        "name": "description",
+        "type": "String",
+        "required": false,
+        "description": "Appointment description."
+      },
+      {
+        "name": "address",
+        "type": "String",
+        "required": false,
+        "description": "Specific address."
+      },
+      {
+        "name": "ignoreDateRange",
+        "type": "Boolean",
+        "required": false,
+        "description": "Bypass calendar date range restricts."
+      },
+      {
+        "name": "toNotify",
+        "type": "Boolean",
+        "required": false,
+        "description": "Send confirmation notifications."
+      },
+      {
+        "name": "ignoreFreeSlotValidation",
+        "type": "Boolean",
+        "required": false,
+        "description": "Skip free slot checking."
+      },
+      {
+        "name": "rrule",
+        "type": "String",
+        "required": false,
+        "description": "Recurring rule string."
+      }
+    ],
+    "POST /contacts": [
+      {
+        "name": "locationId",
+        "type": "String",
+        "required": true,
+        "description": "The unique ID of the sub-account."
+      },
+      {
+        "name": "firstName",
+        "type": "String",
+        "required": false,
+        "description": "First name of the contact."
+      },
+      {
+        "name": "lastName",
+        "type": "String",
+        "required": false,
+        "description": "Last name of the contact."
+      },
+      {
+        "name": "email",
+        "type": "String",
+        "required": false,
+        "description": "Primary email address. Must be unique within the location if deduplication is enabled."
+      },
+      {
+        "name": "phone",
+        "type": "String",
+        "required": false,
+        "description": "Primary phone number (E.164 format recommended)."
+      },
+      {
+        "name": "address1",
+        "type": "String",
+        "required": false,
+        "description": "Street address."
+      },
+      {
+        "name": "city",
+        "type": "String",
+        "required": false,
+        "description": "City."
+      },
+      {
+        "name": "state",
+        "type": "String",
+        "required": false,
+        "description": "State or Province."
+      },
+      {
+        "name": "postalCode",
+        "type": "String",
+        "required": false,
+        "description": "Zip or Postal code."
+      },
+      {
+        "name": "country",
+        "type": "String",
+        "required": false,
+        "description": "Country."
+      },
+      {
+        "name": "website",
+        "type": "String",
+        "required": false,
+        "description": "Website URL."
+      },
+      {
+        "name": "timezone",
+        "type": "String",
+        "required": false,
+        "description": "Timezone (e.g., `America/New_York`)."
+      },
+      {
+        "name": "dnd",
+        "type": "Boolean",
+        "required": false,
+        "description": "Set global DND status."
+      },
+      {
+        "name": "dndSettings",
+        "type": "Object",
+        "required": false,
+        "description": "Granular DND settings for Mail, SMS, etc."
+      },
+      {
+        "name": "tags",
+        "type": "Array",
+        "required": false,
+        "description": "Array of tag strings."
+      },
+      {
+        "name": "customFields",
+        "type": "Array",
+        "required": false,
+        "description": "Array of objects: `{ \"id\": \"fieldId\", \"value\": \"value\" }`."
+      },
+      {
+        "name": "source",
+        "type": "String",
+        "required": false,
+        "description": "Original source of the contact."
+      },
+      {
+        "name": "companyName",
+        "type": "String",
+        "required": false,
+        "description": "Associated company name."
+      },
+      {
+        "name": "assignedTo",
+        "type": "String",
+        "required": false,
+        "description": "User ID to whom the contact is assigned."
+      }
+    ],
+    "POST /opportunities": [
+      {
+        "name": "pipelineId",
+        "type": "String",
+        "required": true,
+        "description": "The unique ID of the pipeline."
+      },
+      {
+        "name": "locationId",
+        "type": "String",
+        "required": true,
+        "description": "The unique ID of the location."
+      },
+      {
+        "name": "name",
+        "type": "String",
+        "required": true,
+        "description": "Name of the opportunity."
+      },
+      {
+        "name": "contactId",
+        "type": "String",
+        "required": true,
+        "description": "The unique ID of the contact."
+      },
+      {
+        "name": "status",
+        "type": "String",
+        "required": true,
+        "description": "Status: `open`, `won`, `lost`, `abandoned`."
+      },
+      {
+        "name": "pipelineStageId",
+        "type": "String",
+        "required": false,
+        "description": "ID of the pipeline stage."
+      },
+      {
+        "name": "monetaryValue",
+        "type": "Number",
+        "required": false,
+        "description": "The monetary value of the deal."
+      },
+      {
+        "name": "assignedTo",
+        "type": "String",
+        "required": false,
+        "description": "The ID of the user assigned to it."
+      },
+      {
+        "name": "customFields",
+        "type": "Array",
+        "required": false,
+        "description": "Array of objects: `{id: string, key: string, field_value: any}`."
+      }
+    ]
+  },
+  "errors": {
+    "400": {
+      "statusCode": 400,
+      "message": "Bad Request"
+    },
+    "401": {
+      "statusCode": 401,
+      "message": "Invalid token: access token is invalid",
+      "error": "Unauthorized"
+    },
+    "422": {
+      "statusCode": 422,
+      "message": [
+        "Unprocessable Entity"
+      ],
+      "error": "Unprocessable Entity"
+    }
+  }
+}

@@ -1,0 +1,337 @@
+# Get Store Settings
+
+---
+
+## 1. METADATA
+
+| Property | Value |
+| :--- | :--- |
+| **HTTP Method** | GET |
+| **Endpoint URL** | `https://services.leadconnectorhq.com/store/store-setting` |
+| **Scopes Required** | `N/A` |
+| **Authentication** | OAuth Access Token / Private Integration Token |
+| **Token Type** | Sub-Account Token |
+
+---
+
+## 2. REQUEST
+
+### Header Parameters
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| **Version** | `string` | Yes | API version. Use `2021-07-28`. |
+
+### Path Parameters
+
+N/A
+### Query Parameters
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| **altId** | `` | Yes | altType string required Possible values: [ location ] |
+| **altType** | `` | No |  |
+
+### Body Parameters
+
+N/A
+---
+
+## 3. RESPONSE
+
+### Success Schema (200/201 OK)
+
+```json
+{
+  "status": true,
+  "message": "Successfully created",
+  "data": {
+    "altId": "6578278e879ad2646715ba9c",
+    "altType": "location",
+    "shippingOrigin": {
+      "name": "ABC Store",
+      "country": "US",
+      "state": "VA",
+      "city": "Tokyo",
+      "street1": "Street 1",
+      "street2": "Street 2",
+      "zip": "674561",
+      "phone": "+1-214-559-6993",
+      "email": "john@deo.com"
+    },
+    "storeOrderNotification": {
+      "enabled": true,
+      "subject": "Your order is placed !",
+      "emailTemplateId": "6788d542f0462ffd6bc29bb9",
+      "defaultEmailTemplateId": "6788d542f0462ffd6bc29bb9"
+    },
+    "storeOrderFulfillmentNotification": {
+      "enabled": true,
+      "subject": "Order fulfilled",
+      "emailTemplateId": "6788d542f0462ffd6bc29bb9",
+      "defaultEmailTemplateId": "6788d542f0462ffd6bc29bb9"
+    },
+    "_id": "655b33a82209e60b6adb87a5",
+    "createdAt": "2023-12-12T09:27:42.355Z",
+    "updatedAt": "2023-12-12T09:27:42.355Z"
+  }
+}
+```
+
+### Response Field Table
+
+| Name | Type | Description |
+| :--- | :--- | :--- |
+| **status** | `bool` |  |
+| **message** | `str` |  |
+| **data** | `dict` |  |
+
+### Error Codes
+
+| Status Code | Description |
+| :--- | :--- |
+| **400 Bad Request** | Invalid input parameters. |
+| **401 Unauthorized** | Invalid Token. |
+
+---
+
+## 4. CODE EXAMPLES
+
+### 1. CURL
+
+```bash
+curl --request GET \
+  --url https://services.leadconnectorhq.com/store/store-setting \
+  --header 'Authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'Version: 2021-07-28' \
+  --header 'Content-Type: application/json' \
+  --header 'Accept: application/json' \
+  --data '{}'
+```
+
+### 2. NODE SDK
+
+```javascript
+const { HighLevel } = require('@gohighlevel/api-client');
+
+const ghl = new HighLevel({
+  clientId: 'YOUR_CLIENT_ID',
+  clientSecret: 'YOUR_CLIENT_SECRET'
+});
+
+async function executeRequest() {
+  try {
+    const response = await ghl.api.request('GET', 'https://services.leadconnectorhq.com/store/store-setting', {
+      headers: { 'Version': '2021-07-28' },
+      body: {}
+    });
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+  }
+}
+```
+
+### 3. AXIOS
+
+```javascript
+const axios = require('axios');
+
+const config = {
+  method: 'get',
+  url: 'https://services.leadconnectorhq.com/store/store-setting',
+  headers: { 
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>', 
+    'Version': '2021-07-28', 
+    'Content-Type': 'application/json', 
+    'Accept': 'application/json'
+  },
+  data : {}
+};
+
+axios(config)
+.then(response => console.log(JSON.stringify(response.data)))
+.catch(error => console.log(error));
+```
+
+### 4. NATIVE NODE
+
+```javascript
+const https = require('follow-redirects').https;
+
+const options = {
+  'method': 'GET',
+  'hostname': 'services.leadconnectorhq.com',
+  'path': '/store/store-setting',
+  'headers': {
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  }
+};
+
+const req = https.request(options, (res) => {
+  let chunks = [];
+  res.on("data", (chunk) => chunks.push(chunk));
+  res.on("end", () => console.log(Buffer.concat(chunks).toString()));
+});
+
+req.write(JSON.stringify({}));
+req.end();
+```
+
+### 5. REQUEST NODE
+
+```javascript
+const request = require('request');
+
+const options = {
+  'method': 'GET',
+  'url': 'https://services.leadconnectorhq.com/store/store-setting',
+  'headers': {
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({})
+};
+
+request(options, (error, response) => {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+```
+
+### 6. UNIREST NODE
+
+```javascript
+const unirest = require('unirest');
+
+unirest('GET', 'https://services.leadconnectorhq.com/store/store-setting')
+  .headers({
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json'
+  })
+  .send(JSON.stringify({}))
+  .end(res => console.log(res.raw_body));
+```
+
+### 7. PYTHON
+
+```python
+import requests
+import json
+
+url = "https://services.leadconnectorhq.com/store/store-setting"
+headers = {
+  'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+  'Version': '2021-07-28',
+  'Content-Type': 'application/json'
+}
+response = requests.request("GET", url, headers=headers, data=json.dumps({}))
+print(response.text)
+```
+
+### 8. PHP
+
+```php
+<?php
+use GuzzleHttp\Client;
+$client = new Client();
+$headers = [
+  'Authorization' => 'Bearer <YOUR_ACCESS_TOKEN>',
+  'Version' => '2021-07-28',
+  'Content-Type' => 'application/json'
+];
+$response = $client->request('GET', 'https://services.leadconnectorhq.com/store/store-setting', [
+  'headers' => $headers,
+  'body' => '{}'
+]);
+echo $response->getBody();
+```
+
+### 9. JAVA
+
+```java
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+HttpClient client = HttpClient.newHttpClient();
+HttpRequest request = HttpRequest.newBuilder()
+    .uri(URI.create("https://services.leadconnectorhq.com/store/store-setting"))
+    .header("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+    .header("Version", "2021-07-28")
+    .header("Content-Type", "application/json")
+    .method("GET", HttpRequest.BodyPublishers.ofString("{}"))
+    .build();
+
+HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+System.out.println(response.body());
+```
+
+### 10. GO
+
+```go
+package main
+import (
+  "fmt"
+  "strings"
+  "net/http"
+  "io/ioutil"
+)
+func main() {
+  url := "https://services.leadconnectorhq.com/store/store-setting"
+  payload := strings.NewReader(`{}`)
+  req, _ := http.NewRequest("GET", url, payload)
+  req.Header.Add("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+  req.Header.Add("Version", "2021-07-28")
+  req.Header.Add("Content-Type", "application/json")
+  res, _ := http.DefaultClient.Do(req)
+  defer res.Body.Close()
+  body, _ := ioutil.ReadAll(res.Body)
+  fmt.Println(string(body))
+}
+```
+
+### 11. RUBY
+
+```ruby
+require 'net/http'
+require 'uri'
+require 'json'
+
+url = URI("https://services.leadconnectorhq.com/store/store-setting")
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+request = Net::HTTP::Get.new(url)
+request["Authorization"] = "Bearer <YOUR_ACCESS_TOKEN>"
+request["Version"] = "2021-07-28"
+request["Content-Type"] = "application/json"
+request.body = JSON.dump({})
+response = http.request(request)
+puts response.read_body
+```
+
+### 12. POWERSHELL
+
+```powershell
+$headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+$headers.Add("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+$headers.Add("Version", "2021-07-28")
+$headers.Add("Content-Type", "application/json")
+
+$body = '{}'
+
+$response = Invoke-RestMethod 'https://services.leadconnectorhq.com/store/store-setting' -Method 'GET' -Headers $headers -Body $body
+$response | ConvertTo-Json
+```
+
+---
+
+## 5. NOTES
+
+- Ensure the `Version: 2021-07-28` header is included.

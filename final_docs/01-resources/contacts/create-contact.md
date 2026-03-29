@@ -1,107 +1,899 @@
-# POST Create Contact
+# Create Contact
 
-**Ruta:** `POST /contacts/`
-**Autenticación:** OAuth 2.0 / Private Integration Token
-**Scopes requeridos:** `contacts.write`
-**Rate limit:** Estándar (100 req/10s burst — 200k/día)
+---
 
-## Descripción
-Crea un nuevo registro de contacto en una ubicación (sub-account) específica. Si el email ya existe y la deduplicación está activa, la API puede devolver un error 422 o realizar un merge dependiendo de la configuración del sub-account.
+## 1. METADATA
 
-## Headers
-| Header        | Tipo   | Requerido | Valor             |
-|---------------|--------|-----------|-------------------|
-| Authorization | string | ✅        | Bearer {token}    |
-| Version       | string | ✅        | 2021-07-28        |
-| Content-Type  | string | ✅        | application/json |
+| Property | Value |
+| :--- | :--- |
+| **HTTP Method** | POST |
+| **Endpoint URL** | `https://services.leadconnectorhq.com/contacts/` |
+| **Scopes Required** | `contacts.write` |
+| **Authentication** | OAuth Access Token / Private Integration Token |
+| **Token Type** | Sub-Account Token |
 
-## Path Parameters
-*(Ninguno)*
+---
 
-## Query Parameters
-*(Ninguno)*
+## 2. REQUEST
 
-## Request Body
-```json
-{
-  "locationId": "string — ID de la ubicación (REQUERIDO)",
-  "firstName": "string — Nombre",
-  "lastName": "string — Apellido",
-  "email": "string — Correo electrónico principal",
-  "phone": "string — Teléfono en formato E.164",
-  "address1": "string — Dirección",
-  "city": "string — Ciudad",
-  "state": "string — Estado/Provincia",
-  "postalCode": "string — Código postal",
-  "website": "string — URL del sitio web",
-  "timezone": "string — Zona horaria (ej: America/New_York)",
-  "dnd": "boolean — Estado global de No Molestar",
-  "tags": ["array — Etiquetas a asignar"],
-  "customFields": [
-    {
-      "id": "string — ID del campo personalizado",
-      "value": "any — Valor del campo"
-    }
-  ],
-  "source": "string — Origen del contacto"
-}
-```
+### Header Parameters
 
-| Campo | Tipo | Requerido | Descripción | Constraints |
-|-------|------|-----------|-------------|-------------|
-| `locationId` | string | ✅ | ID de la ubicación de destino. | Obligatorio. |
-| `email` | string | ❌ | Email del contacto. | Validar formato email. |
-| `phone` | string | ❌ | Teléfono del contacto. | Formato E.164. |
-| `tags` | array | ❌ | Lista de etiquetas. | Máx 100 caracteres por etiqueta. |
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| **Version** | `` | No |  |
 
-## Response 201
+### Path Parameters
+
+N/A
+### Query Parameters
+
+N/A
+### Body Parameters
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| **firstName** | `string` | No |  |
+| **lastName** | `string` | No |  |
+| **name** | `string` | No |  |
+| **email** | `string` | No |  |
+| **locationId** | `string` | No |  |
+| **gender** | `string` | No |  |
+| **phone** | `string` | No |  |
+| **address1** | `string` | No |  |
+| **city** | `string` | No |  |
+| **state** | `string` | No |  |
+| **postalCode** | `string` | No |  |
+| **website** | `string` | No |  |
+| **timezone** | `string` | No |  |
+| **dnd** | `boolean` | No |  |
+| **dndSettings** | `object` | Yes | Call object status string required Possible values: [ active , inactive , permanent ] message string code string Email object status string required Possible values: [ active , inactive , permanent ] message string code string SMS object status string required Possible values: [ active , inactive , permanent ] message string code string WhatsApp object status string required Possible values: [ active , inactive , permanent ] message string code string GMB object status string required Possible values: [ active , inactive , permanent ] message string code string FB object status string required Possible values: [ active , inactive , permanent ] message string code string |
+| **Call** | `object` | Yes | status string required Possible values: [ active , inactive , permanent ] message string code string |
+| **status** | `string` | No |  |
+| **message** | `string` | No |  |
+| **code** | `string` | No |  |
+| **Email** | `object` | Yes | status string required Possible values: [ active , inactive , permanent ] message string code string |
+| **status** | `string` | No |  |
+| **message** | `string` | No |  |
+| **code** | `string` | No |  |
+| **SMS** | `object` | Yes | status string required Possible values: [ active , inactive , permanent ] message string code string |
+| **status** | `string` | No |  |
+| **message** | `string` | No |  |
+| **code** | `string` | No |  |
+| **WhatsApp** | `object` | Yes | status string required Possible values: [ active , inactive , permanent ] message string code string |
+| **status** | `string` | No |  |
+| **message** | `string` | No |  |
+| **code** | `string` | No |  |
+| **GMB** | `object` | Yes | status string required Possible values: [ active , inactive , permanent ] message string code string |
+| **status** | `string` | No |  |
+| **message** | `string` | No |  |
+| **code** | `string` | No |  |
+| **FB** | `object` | Yes | status string required Possible values: [ active , inactive , permanent ] message string code string |
+| **status** | `string` | No |  |
+| **message** | `string` | No |  |
+| **code** | `string` | No |  |
+| **inboundDndSettings** | `object` | Yes | all object status string required Possible values: [ active , inactive ] message string |
+| **all** | `object` | Yes | status string required Possible values: [ active , inactive ] message string |
+| **status** | `string` | No |  |
+| **message** | `string` | No |  |
+| **tags** | `string[]` | No |  |
+| **customFields** | `object[]` | Yes | Array [ anyOf TextField LargeTextField SingleSelectField RadioField NumericField MonetoryField CheckboxField MultiSelectField FileField id string required Example: 6dvNaf7VhkQ9snc5vnjJ key string Example: my_custom_field field_value string Example: My Text id string required Example: 6dvNaf7VhkQ9snc5vnjJ key string Example: my_custom_field field_value string Example: My Text id string required Example: 6dvNaf7VhkQ9snc5vnjJ key string Example: my_custom_field field_value string Example: My Selected Option id string required Example: 6dvNaf7VhkQ9snc5vnjJ key string Example: my_custom_field field_value string Example: My Selected Option id string required Example: 6dvNaf7VhkQ9snc5vnjJ key string Example: my_custom_field field_value object Example: 100 id string required Example: 6dvNaf7VhkQ9snc5vnjJ key string Example: my_custom_field field_value object Example: 100.5 id string required Example: 6dvNaf7VhkQ9snc5vnjJ key string Example: my_custom_field field_value string[] Example: ["test","test2"] id string required Example: 6dvNaf7VhkQ9snc5vnjJ key string Example: my_custom_field field_value string[] Example: ["test","test2"] id string required Example: 6dvNaf7VhkQ9snc5vnjJ key string Example: my_custom_field field_value object Example: {"f31175d4-2b06-4fc6-b7bc-74cd814c68cb":{"meta":{"fieldname":"1HeGizb13P0odwgOgKSs","originalname":"IMG_20231215_164412935.jpg","encoding":"7bit","mimetype":"image/jpeg","size":1786611,"uuid":"f31175d4-2b06-4fc6-b7bc-74cd814c68cb"},"url":"https://services.leadconnectorhq.com/documents/download/w2M9qTZ0ZJz8rGt02jdJ","documentId":"w2M9qTZ0ZJz8rGt02jdJ"}} ] |
+| **id** | `string` | No |  |
+| **key** | `string` | No |  |
+| **field_value** | `string` | No |  |
+| **id** | `string` | No |  |
+| **key** | `string` | No |  |
+| **field_value** | `string` | No |  |
+| **id** | `string` | No |  |
+| **key** | `string` | No |  |
+| **field_value** | `string` | No |  |
+| **id** | `string` | No |  |
+| **key** | `string` | No |  |
+| **field_value** | `string` | No |  |
+| **id** | `string` | No |  |
+| **key** | `string` | No |  |
+| **field_value** | `object` | No |  |
+| **id** | `string` | No |  |
+| **key** | `string` | No |  |
+| **field_value** | `object` | No |  |
+| **id** | `string` | No |  |
+| **key** | `string` | No |  |
+| **field_value** | `string[]` | No |  |
+| **id** | `string` | No |  |
+| **key** | `string` | No |  |
+| **field_value** | `string[]` | No |  |
+| **id** | `string` | No |  |
+| **key** | `string` | No |  |
+| **field_value** | `object` | No |  |
+| **source** | `string` | No |  |
+| **dateOfBirth** | `object` | No |  |
+| **country** | `string` | No |  |
+| **companyName** | `string` | No |  |
+| **assignedTo** | `string` | No |  |
+
+---
+
+## 3. RESPONSE
+
+### Success Schema (200/201 OK)
+
 ```json
 {
   "contact": {
-    "id": "abc123456789",
-    "locationId": "loc_abc123",
-    "email": "juan@ejemplo.com",
-    "firstName": "Juan",
-    "lastName": "Perez"
+    "id": "seD4PfOuKoVMLkEZqohJ",
+    "dateAdded": "2021-08-31T09:59:41.937Z",
+    "dateUpdated": "2021-08-31T09:59:41.937Z",
+    "deleted": false,
+    "tags": [
+      "nisi sint commodo amet",
+      "consequat"
+    ],
+    "type": "read",
+    "customFields": [
+      {
+        "id": "MgobCB14YMVKuE4Ka8p1",
+        "value": "name"
+      }
+    ],
+    "locationId": "ve9EPM428h8vShlRW1KT",
+    "firstName": "rubika",
+    "firstNameLowerCase": "rubika",
+    "fullNameLowerCase": "rubika deo",
+    "lastName": "Deo",
+    "lastNameLowerCase": "deo",
+    "email": "rubika@deos.com",
+    "emailLowerCase": "rubika@deos.com",
+    "bounceEmail": false,
+    "unsubscribeEmail": false,
+    "dnd": true,
+    "dndSettings": {
+      "Call": {
+        "status": "active",
+        "message": "string",
+        "code": "string"
+      },
+      "Email": {
+        "status": "active",
+        "message": "string",
+        "code": "string"
+      },
+      "SMS": {
+        "status": "active",
+        "message": "string",
+        "code": "string"
+      },
+      "WhatsApp": {
+        "status": "active",
+        "message": "string",
+        "code": "string"
+      },
+      "GMB": {
+        "status": "active",
+        "message": "string",
+        "code": "string"
+      },
+      "FB": {
+        "status": "active",
+        "message": "string",
+        "code": "string"
+      }
+    },
+    "phone": "+18832327657",
+    "address1": "3535 1st St N",
+    "city": "ruDolomitebika",
+    "state": "AL",
+    "country": "US",
+    "postalCode": "35061",
+    "website": "https://www.tesla.com",
+    "source": "public api",
+    "companyName": "DGS VolMAX",
+    "dateOfBirth": "Date format will be  YYYY-MM-DDTHH:mm:ss.sssZ and  Example 1990-09-25T00:00:00.000Z",
+    "birthMonth": 8,
+    "birthDay": 25,
+    "lastSessionActivityAt": "2021-07-16T11:39:30.564Z",
+    "offers": [],
+    "products": [],
+    "businessId": "641c094001436dbc2081e642",
+    "assignedTo": "y0BeYjuRIlDwsDcOHOJo"
   }
 }
 ```
 
-## Errores
-| Status | Error | Causa frecuente | Solución |
-|--------|-------|-----------------|----------|
-| 400 | BAD_REQUEST | `locationId` faltante o inválido. | Verificar body params. |
-| 401 | UNAUTHORIZED | Token de acceso inválido o expirado. | Refrescar token OAuth. |
-| 422 | UNPROCESSABLE | El email ya existe en esta ubicación. | Ver `message[]` para detalle. |
-| 429 | RATE_LIMIT | Límite de ráfaga (100/10s) excedido. | Esperar e implementar backoff. |
+### Response Field Table
 
-> ⚠️ El campo `message` en errores 422 es un **Array de strings**, no un string.
-> Parsear como `error.message.join(', ')` para evitar crashes.
+| Name | Type | Description |
+| :--- | :--- | :--- |
+| **contact** | `dict` |  |
 
-## Ejemplo — Node.js SDK
-```typescript
-const result = await ghl.contacts.create({
-  locationId: 'loc_abc123',
-  firstName: 'Juan',
-  lastName: 'Perez',
-  email: 'juan@ejemplo.com'
+### Error Codes
+
+| Status Code | Description |
+| :--- | :--- |
+| **400 Bad Request** | Invalid input parameters. |
+| **401 Unauthorized** | Invalid Token. |
+
+---
+
+## 4. CODE EXAMPLES
+
+### 1. CURL
+
+```bash
+curl --request POST \
+  --url https://services.leadconnectorhq.com/contacts/ \
+  --header 'Authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'Version: 2021-07-28' \
+  --header 'Content-Type: application/json' \
+  --header 'Accept: application/json' \
+  --data '{
+  "firstName": "string",
+  "lastName": "string",
+  "name": "string",
+  "email": "string",
+  "locationId": "string",
+  "gender": "string",
+  "phone": "string",
+  "address1": "string",
+  "city": "string",
+  "state": "string",
+  "postalCode": "string",
+  "website": "string",
+  "timezone": "string",
+  "dnd": true,
+  "dndSettings": "string",
+  "Call": "string",
+  "status": "string",
+  "message": "string",
+  "code": "string",
+  "Email": "string",
+  "SMS": "string",
+  "WhatsApp": "string",
+  "GMB": "string",
+  "FB": "string",
+  "inboundDndSettings": "string",
+  "all": "string",
+  "tags": "string",
+  "customFields": "string",
+  "id": "string",
+  "key": "string",
+  "field_value": "string",
+  "source": "string",
+  "dateOfBirth": "string",
+  "country": "string",
+  "companyName": "string",
+  "assignedTo": "string"
+}'
+```
+
+### 2. NODE SDK
+
+```javascript
+const { HighLevel } = require('@gohighlevel/api-client');
+
+const ghl = new HighLevel({
+  clientId: 'YOUR_CLIENT_ID',
+  clientSecret: 'YOUR_CLIENT_SECRET'
+});
+
+async function executeRequest() {
+  try {
+    const response = await ghl.api.request('POST', 'https://services.leadconnectorhq.com/contacts/', {
+      headers: { 'Version': '2021-07-28' },
+      body: {
+  "firstName": "string",
+  "lastName": "string",
+  "name": "string",
+  "email": "string",
+  "locationId": "string",
+  "gender": "string",
+  "phone": "string",
+  "address1": "string",
+  "city": "string",
+  "state": "string",
+  "postalCode": "string",
+  "website": "string",
+  "timezone": "string",
+  "dnd": true,
+  "dndSettings": "string",
+  "Call": "string",
+  "status": "string",
+  "message": "string",
+  "code": "string",
+  "Email": "string",
+  "SMS": "string",
+  "WhatsApp": "string",
+  "GMB": "string",
+  "FB": "string",
+  "inboundDndSettings": "string",
+  "all": "string",
+  "tags": "string",
+  "customFields": "string",
+  "id": "string",
+  "key": "string",
+  "field_value": "string",
+  "source": "string",
+  "dateOfBirth": "string",
+  "country": "string",
+  "companyName": "string",
+  "assignedTo": "string"
+}
+    });
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+  }
+}
+```
+
+### 3. AXIOS
+
+```javascript
+const axios = require('axios');
+
+const config = {
+  method: 'post',
+  url: 'https://services.leadconnectorhq.com/contacts/',
+  headers: { 
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>', 
+    'Version': '2021-07-28', 
+    'Content-Type': 'application/json', 
+    'Accept': 'application/json'
+  },
+  data : {
+  "firstName": "string",
+  "lastName": "string",
+  "name": "string",
+  "email": "string",
+  "locationId": "string",
+  "gender": "string",
+  "phone": "string",
+  "address1": "string",
+  "city": "string",
+  "state": "string",
+  "postalCode": "string",
+  "website": "string",
+  "timezone": "string",
+  "dnd": true,
+  "dndSettings": "string",
+  "Call": "string",
+  "status": "string",
+  "message": "string",
+  "code": "string",
+  "Email": "string",
+  "SMS": "string",
+  "WhatsApp": "string",
+  "GMB": "string",
+  "FB": "string",
+  "inboundDndSettings": "string",
+  "all": "string",
+  "tags": "string",
+  "customFields": "string",
+  "id": "string",
+  "key": "string",
+  "field_value": "string",
+  "source": "string",
+  "dateOfBirth": "string",
+  "country": "string",
+  "companyName": "string",
+  "assignedTo": "string"
+}
+};
+
+axios(config)
+.then(response => console.log(JSON.stringify(response.data)))
+.catch(error => console.log(error));
+```
+
+### 4. NATIVE NODE
+
+```javascript
+const https = require('follow-redirects').https;
+
+const options = {
+  'method': 'POST',
+  'hostname': 'services.leadconnectorhq.com',
+  'path': '/contacts/',
+  'headers': {
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  }
+};
+
+const req = https.request(options, (res) => {
+  let chunks = [];
+  res.on("data", (chunk) => chunks.push(chunk));
+  res.on("end", () => console.log(Buffer.concat(chunks).toString()));
+});
+
+req.write(JSON.stringify({
+  "firstName": "string",
+  "lastName": "string",
+  "name": "string",
+  "email": "string",
+  "locationId": "string",
+  "gender": "string",
+  "phone": "string",
+  "address1": "string",
+  "city": "string",
+  "state": "string",
+  "postalCode": "string",
+  "website": "string",
+  "timezone": "string",
+  "dnd": true,
+  "dndSettings": "string",
+  "Call": "string",
+  "status": "string",
+  "message": "string",
+  "code": "string",
+  "Email": "string",
+  "SMS": "string",
+  "WhatsApp": "string",
+  "GMB": "string",
+  "FB": "string",
+  "inboundDndSettings": "string",
+  "all": "string",
+  "tags": "string",
+  "customFields": "string",
+  "id": "string",
+  "key": "string",
+  "field_value": "string",
+  "source": "string",
+  "dateOfBirth": "string",
+  "country": "string",
+  "companyName": "string",
+  "assignedTo": "string"
+}));
+req.end();
+```
+
+### 5. REQUEST NODE
+
+```javascript
+const request = require('request');
+
+const options = {
+  'method': 'POST',
+  'url': 'https://services.leadconnectorhq.com/contacts/',
+  'headers': {
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+  "firstName": "string",
+  "lastName": "string",
+  "name": "string",
+  "email": "string",
+  "locationId": "string",
+  "gender": "string",
+  "phone": "string",
+  "address1": "string",
+  "city": "string",
+  "state": "string",
+  "postalCode": "string",
+  "website": "string",
+  "timezone": "string",
+  "dnd": true,
+  "dndSettings": "string",
+  "Call": "string",
+  "status": "string",
+  "message": "string",
+  "code": "string",
+  "Email": "string",
+  "SMS": "string",
+  "WhatsApp": "string",
+  "GMB": "string",
+  "FB": "string",
+  "inboundDndSettings": "string",
+  "all": "string",
+  "tags": "string",
+  "customFields": "string",
+  "id": "string",
+  "key": "string",
+  "field_value": "string",
+  "source": "string",
+  "dateOfBirth": "string",
+  "country": "string",
+  "companyName": "string",
+  "assignedTo": "string"
+})
+};
+
+request(options, (error, response) => {
+  if (error) throw new Error(error);
+  console.log(response.body);
 });
 ```
 
-## Ejemplo — cURL
-```bash
-curl -X POST \
-  'https://services.leadconnectorhq.com/contacts/' \
-  -H 'Authorization: Bearer YOUR_TOKEN' \
-  -H 'Version: 2021-07-28' \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "locationId": "loc_abc123",
-    "firstName": "Juan",
-    "lastName": "Perez",
-    "email": "juan@ejemplo.com"
-  }'
+### 6. UNIREST NODE
+
+```javascript
+const unirest = require('unirest');
+
+unirest('POST', 'https://services.leadconnectorhq.com/contacts/')
+  .headers({
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json'
+  })
+  .send(JSON.stringify({
+  "firstName": "string",
+  "lastName": "string",
+  "name": "string",
+  "email": "string",
+  "locationId": "string",
+  "gender": "string",
+  "phone": "string",
+  "address1": "string",
+  "city": "string",
+  "state": "string",
+  "postalCode": "string",
+  "website": "string",
+  "timezone": "string",
+  "dnd": true,
+  "dndSettings": "string",
+  "Call": "string",
+  "status": "string",
+  "message": "string",
+  "code": "string",
+  "Email": "string",
+  "SMS": "string",
+  "WhatsApp": "string",
+  "GMB": "string",
+  "FB": "string",
+  "inboundDndSettings": "string",
+  "all": "string",
+  "tags": "string",
+  "customFields": "string",
+  "id": "string",
+  "key": "string",
+  "field_value": "string",
+  "source": "string",
+  "dateOfBirth": "string",
+  "country": "string",
+  "companyName": "string",
+  "assignedTo": "string"
+}))
+  .end(res => console.log(res.raw_body));
 ```
 
-## Notas
-> Si se envía un contacto con un email que ya existe en la misma `locationId`, el comportamiento por defecto es rechazar la creación (422) a menos que se use el endpoint de Upsert.
+### 7. PYTHON
+
+```python
+import requests
+import json
+
+url = "https://services.leadconnectorhq.com/contacts/"
+headers = {
+  'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+  'Version': '2021-07-28',
+  'Content-Type': 'application/json'
+}
+response = requests.request("POST", url, headers=headers, data=json.dumps({
+  "firstName": "string",
+  "lastName": "string",
+  "name": "string",
+  "email": "string",
+  "locationId": "string",
+  "gender": "string",
+  "phone": "string",
+  "address1": "string",
+  "city": "string",
+  "state": "string",
+  "postalCode": "string",
+  "website": "string",
+  "timezone": "string",
+  "dnd": true,
+  "dndSettings": "string",
+  "Call": "string",
+  "status": "string",
+  "message": "string",
+  "code": "string",
+  "Email": "string",
+  "SMS": "string",
+  "WhatsApp": "string",
+  "GMB": "string",
+  "FB": "string",
+  "inboundDndSettings": "string",
+  "all": "string",
+  "tags": "string",
+  "customFields": "string",
+  "id": "string",
+  "key": "string",
+  "field_value": "string",
+  "source": "string",
+  "dateOfBirth": "string",
+  "country": "string",
+  "companyName": "string",
+  "assignedTo": "string"
+}))
+print(response.text)
+```
+
+### 8. PHP
+
+```php
+<?php
+use GuzzleHttp\Client;
+$client = new Client();
+$headers = [
+  'Authorization' => 'Bearer <YOUR_ACCESS_TOKEN>',
+  'Version' => '2021-07-28',
+  'Content-Type' => 'application/json'
+];
+$response = $client->request('POST', 'https://services.leadconnectorhq.com/contacts/', [
+  'headers' => $headers,
+  'body' => '{
+  "firstName": "string",
+  "lastName": "string",
+  "name": "string",
+  "email": "string",
+  "locationId": "string",
+  "gender": "string",
+  "phone": "string",
+  "address1": "string",
+  "city": "string",
+  "state": "string",
+  "postalCode": "string",
+  "website": "string",
+  "timezone": "string",
+  "dnd": true,
+  "dndSettings": "string",
+  "Call": "string",
+  "status": "string",
+  "message": "string",
+  "code": "string",
+  "Email": "string",
+  "SMS": "string",
+  "WhatsApp": "string",
+  "GMB": "string",
+  "FB": "string",
+  "inboundDndSettings": "string",
+  "all": "string",
+  "tags": "string",
+  "customFields": "string",
+  "id": "string",
+  "key": "string",
+  "field_value": "string",
+  "source": "string",
+  "dateOfBirth": "string",
+  "country": "string",
+  "companyName": "string",
+  "assignedTo": "string"
+}'
+]);
+echo $response->getBody();
+```
+
+### 9. JAVA
+
+```java
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+HttpClient client = HttpClient.newHttpClient();
+HttpRequest request = HttpRequest.newBuilder()
+    .uri(URI.create("https://services.leadconnectorhq.com/contacts/"))
+    .header("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+    .header("Version", "2021-07-28")
+    .header("Content-Type", "application/json")
+    .method("POST", HttpRequest.BodyPublishers.ofString("{
+  \"firstName\": \"string\",
+  \"lastName\": \"string\",
+  \"name\": \"string\",
+  \"email\": \"string\",
+  \"locationId\": \"string\",
+  \"gender\": \"string\",
+  \"phone\": \"string\",
+  \"address1\": \"string\",
+  \"city\": \"string\",
+  \"state\": \"string\",
+  \"postalCode\": \"string\",
+  \"website\": \"string\",
+  \"timezone\": \"string\",
+  \"dnd\": true,
+  \"dndSettings\": \"string\",
+  \"Call\": \"string\",
+  \"status\": \"string\",
+  \"message\": \"string\",
+  \"code\": \"string\",
+  \"Email\": \"string\",
+  \"SMS\": \"string\",
+  \"WhatsApp\": \"string\",
+  \"GMB\": \"string\",
+  \"FB\": \"string\",
+  \"inboundDndSettings\": \"string\",
+  \"all\": \"string\",
+  \"tags\": \"string\",
+  \"customFields\": \"string\",
+  \"id\": \"string\",
+  \"key\": \"string\",
+  \"field_value\": \"string\",
+  \"source\": \"string\",
+  \"dateOfBirth\": \"string\",
+  \"country\": \"string\",
+  \"companyName\": \"string\",
+  \"assignedTo\": \"string\"
+}"))
+    .build();
+
+HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+System.out.println(response.body());
+```
+
+### 10. GO
+
+```go
+package main
+import (
+  "fmt"
+  "strings"
+  "net/http"
+  "io/ioutil"
+)
+func main() {
+  url := "https://services.leadconnectorhq.com/contacts/"
+  payload := strings.NewReader(`{
+  "firstName": "string",
+  "lastName": "string",
+  "name": "string",
+  "email": "string",
+  "locationId": "string",
+  "gender": "string",
+  "phone": "string",
+  "address1": "string",
+  "city": "string",
+  "state": "string",
+  "postalCode": "string",
+  "website": "string",
+  "timezone": "string",
+  "dnd": true,
+  "dndSettings": "string",
+  "Call": "string",
+  "status": "string",
+  "message": "string",
+  "code": "string",
+  "Email": "string",
+  "SMS": "string",
+  "WhatsApp": "string",
+  "GMB": "string",
+  "FB": "string",
+  "inboundDndSettings": "string",
+  "all": "string",
+  "tags": "string",
+  "customFields": "string",
+  "id": "string",
+  "key": "string",
+  "field_value": "string",
+  "source": "string",
+  "dateOfBirth": "string",
+  "country": "string",
+  "companyName": "string",
+  "assignedTo": "string"
+}`)
+  req, _ := http.NewRequest("POST", url, payload)
+  req.Header.Add("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+  req.Header.Add("Version", "2021-07-28")
+  req.Header.Add("Content-Type", "application/json")
+  res, _ := http.DefaultClient.Do(req)
+  defer res.Body.Close()
+  body, _ := ioutil.ReadAll(res.Body)
+  fmt.Println(string(body))
+}
+```
+
+### 11. RUBY
+
+```ruby
+require 'net/http'
+require 'uri'
+require 'json'
+
+url = URI("https://services.leadconnectorhq.com/contacts/")
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+request = Net::HTTP::Post.new(url)
+request["Authorization"] = "Bearer <YOUR_ACCESS_TOKEN>"
+request["Version"] = "2021-07-28"
+request["Content-Type"] = "application/json"
+request.body = JSON.dump({
+  "firstName": "string",
+  "lastName": "string",
+  "name": "string",
+  "email": "string",
+  "locationId": "string",
+  "gender": "string",
+  "phone": "string",
+  "address1": "string",
+  "city": "string",
+  "state": "string",
+  "postalCode": "string",
+  "website": "string",
+  "timezone": "string",
+  "dnd": true,
+  "dndSettings": "string",
+  "Call": "string",
+  "status": "string",
+  "message": "string",
+  "code": "string",
+  "Email": "string",
+  "SMS": "string",
+  "WhatsApp": "string",
+  "GMB": "string",
+  "FB": "string",
+  "inboundDndSettings": "string",
+  "all": "string",
+  "tags": "string",
+  "customFields": "string",
+  "id": "string",
+  "key": "string",
+  "field_value": "string",
+  "source": "string",
+  "dateOfBirth": "string",
+  "country": "string",
+  "companyName": "string",
+  "assignedTo": "string"
+})
+response = http.request(request)
+puts response.read_body
+```
+
+### 12. POWERSHELL
+
+```powershell
+$headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+$headers.Add("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+$headers.Add("Version", "2021-07-28")
+$headers.Add("Content-Type", "application/json")
+
+$body = '{
+  "firstName": "string",
+  "lastName": "string",
+  "name": "string",
+  "email": "string",
+  "locationId": "string",
+  "gender": "string",
+  "phone": "string",
+  "address1": "string",
+  "city": "string",
+  "state": "string",
+  "postalCode": "string",
+  "website": "string",
+  "timezone": "string",
+  "dnd": true,
+  "dndSettings": "string",
+  "Call": "string",
+  "status": "string",
+  "message": "string",
+  "code": "string",
+  "Email": "string",
+  "SMS": "string",
+  "WhatsApp": "string",
+  "GMB": "string",
+  "FB": "string",
+  "inboundDndSettings": "string",
+  "all": "string",
+  "tags": "string",
+  "customFields": "string",
+  "id": "string",
+  "key": "string",
+  "field_value": "string",
+  "source": "string",
+  "dateOfBirth": "string",
+  "country": "string",
+  "companyName": "string",
+  "assignedTo": "string"
+}'
+
+$response = Invoke-RestMethod 'https://services.leadconnectorhq.com/contacts/' -Method 'POST' -Headers $headers -Body $body
+$response | ConvertTo-Json
+```
+
+---
+
+## 5. NOTES
+
+- Ensure the `Version: 2021-07-28` header is included.

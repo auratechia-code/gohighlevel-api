@@ -1,0 +1,42 @@
+{
+  "url": "https://marketplace.gohighlevel.com/docs/ghl/calendars/create-appointment",
+  "title": "Create appointment",
+  "description": "Create appointment",
+  "breadcrumbs": [
+    "",
+    "Calendars",
+    "Calendar Events",
+    "Create appointment"
+  ],
+  "http_method": "Create appointment",
+  "endpoint_path": "POST /calendars/events/appointments",
+  "parameters": [],
+  "request_body": null,
+  "response_body": null,
+  "errors": [],
+  "sections": {
+    "overview": [
+      "POST /calendars/events/appointments"
+    ],
+    "/calendars/events/appointments": [
+      "Create appointment"
+    ],
+    "request_\u00e2\u0080\u008b": [],
+    "responses_\u00e2\u0080\u008b": [
+      "200",
+      "400",
+      "401"
+    ]
+  },
+  "code_blocks": [
+    {
+      "lang": "text",
+      "code": "POST /calendars/events/appointments"
+    }
+  ],
+  "sdk_examples": null,
+  "webhook_info": null,
+  "tables": [],
+  "body_text": "Create appointment POST /calendars/events/appointments Create appointment Request \u00e2\u0080\u008b Responses \u00e2\u0080\u008b 200 400 401 Successful response Bad Request Unauthorized",
+  "_scraped_at": "2026-03-29T20:03:35.854348Z"
+}

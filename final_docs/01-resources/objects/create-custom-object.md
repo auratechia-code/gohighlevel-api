@@ -1,0 +1,446 @@
+# Create Custom Object
+
+---
+
+## 1. METADATA
+
+| Property | Value |
+| :--- | :--- |
+| **HTTP Method** | POST |
+| **Endpoint URL** | `https://services.leadconnectorhq.com/objects/` |
+| **Scopes Required** | `objects/schema.write` |
+| **Authentication** | OAuth Access Token / Private Integration Token |
+| **Token Type** | Sub-Account Token |
+
+---
+
+## 2. REQUEST
+
+### Header Parameters
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| **Version** | `` | No |  |
+
+### Path Parameters
+
+N/A
+### Query Parameters
+
+N/A
+### Body Parameters
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| **labels** | `object` | Yes | This is what your custom object will be called. These labels will be used to display your custom object on the UI singular string required Singular name of the custom object Example: Pet plural string required Plural name of the custom object Example: Pets |
+| **singular** | `string` | No |  |
+| **plural** | `string` | No |  |
+| **key** | `string` | No |  |
+| **description** | `string` | No |  |
+| **locationId** | `string` | No |  |
+| **primaryDisplayPropertyDetails** | `object` | Yes | Primary property which will be displayed on the record page key string required key that would be used to refer the custom field internally (lowercase + underscore_separated). 'custom_objects.{{objectKey}}' would be added as prefix by default is not passed Example: custom_objects.pet.name name string required Name of the Primary property name which will be displayed on the record page Example: Pet name dataType string required Primary property data Type (it can either be TEXT or NUMERICAL type) Example: TEXT |
+| **key** | `string` | No |  |
+| **name** | `string` | No |  |
+| **dataType** | `string` | No |  |
+
+---
+
+## 3. RESPONSE
+
+### Success Schema (200/201 OK)
+
+```json
+{
+  "object": {
+    "id": "661c06b4ffde146bdb469442",
+    "standard": false,
+    "key": "custom_objects.pet",
+    "labels": {
+      "singular": "Pet",
+      "plural": "Pets"
+    },
+    "description": "These are non vaccinated pets",
+    "locationId": "Q9DT3OAqEXDLYuob1G32",
+    "primaryDisplayProperty": "custom_objects.pet.name",
+    "dateAdded": "2024-07-29T15:51:28.071Z",
+    "dateUpdated": "2024-07-29T15:51:28.071Z",
+    "type": "The Object type can either USER_DEFINED or SYSTEM_DEFINED"
+  }
+}
+```
+
+### Response Field Table
+
+| Name | Type | Description |
+| :--- | :--- | :--- |
+| **object** | `dict` |  |
+
+### Error Codes
+
+| Status Code | Description |
+| :--- | :--- |
+| **400 Bad Request** | Invalid input parameters. |
+| **401 Unauthorized** | Invalid Token. |
+
+---
+
+## 4. CODE EXAMPLES
+
+### 1. CURL
+
+```bash
+curl --request POST \
+  --url https://services.leadconnectorhq.com/objects/ \
+  --header 'Authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'Version: 2021-07-28' \
+  --header 'Content-Type: application/json' \
+  --header 'Accept: application/json' \
+  --data '{
+  "labels": "string",
+  "singular": "string",
+  "plural": "string",
+  "key": "string",
+  "description": "string",
+  "locationId": "string",
+  "primaryDisplayPropertyDetails": "string",
+  "name": "string",
+  "dataType": "string"
+}'
+```
+
+### 2. NODE SDK
+
+```javascript
+const { HighLevel } = require('@gohighlevel/api-client');
+
+const ghl = new HighLevel({
+  clientId: 'YOUR_CLIENT_ID',
+  clientSecret: 'YOUR_CLIENT_SECRET'
+});
+
+async function executeRequest() {
+  try {
+    const response = await ghl.api.request('POST', 'https://services.leadconnectorhq.com/objects/', {
+      headers: { 'Version': '2021-07-28' },
+      body: {
+  "labels": "string",
+  "singular": "string",
+  "plural": "string",
+  "key": "string",
+  "description": "string",
+  "locationId": "string",
+  "primaryDisplayPropertyDetails": "string",
+  "name": "string",
+  "dataType": "string"
+}
+    });
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+  }
+}
+```
+
+### 3. AXIOS
+
+```javascript
+const axios = require('axios');
+
+const config = {
+  method: 'post',
+  url: 'https://services.leadconnectorhq.com/objects/',
+  headers: { 
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>', 
+    'Version': '2021-07-28', 
+    'Content-Type': 'application/json', 
+    'Accept': 'application/json'
+  },
+  data : {
+  "labels": "string",
+  "singular": "string",
+  "plural": "string",
+  "key": "string",
+  "description": "string",
+  "locationId": "string",
+  "primaryDisplayPropertyDetails": "string",
+  "name": "string",
+  "dataType": "string"
+}
+};
+
+axios(config)
+.then(response => console.log(JSON.stringify(response.data)))
+.catch(error => console.log(error));
+```
+
+### 4. NATIVE NODE
+
+```javascript
+const https = require('follow-redirects').https;
+
+const options = {
+  'method': 'POST',
+  'hostname': 'services.leadconnectorhq.com',
+  'path': '/objects/',
+  'headers': {
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  }
+};
+
+const req = https.request(options, (res) => {
+  let chunks = [];
+  res.on("data", (chunk) => chunks.push(chunk));
+  res.on("end", () => console.log(Buffer.concat(chunks).toString()));
+});
+
+req.write(JSON.stringify({
+  "labels": "string",
+  "singular": "string",
+  "plural": "string",
+  "key": "string",
+  "description": "string",
+  "locationId": "string",
+  "primaryDisplayPropertyDetails": "string",
+  "name": "string",
+  "dataType": "string"
+}));
+req.end();
+```
+
+### 5. REQUEST NODE
+
+```javascript
+const request = require('request');
+
+const options = {
+  'method': 'POST',
+  'url': 'https://services.leadconnectorhq.com/objects/',
+  'headers': {
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+  "labels": "string",
+  "singular": "string",
+  "plural": "string",
+  "key": "string",
+  "description": "string",
+  "locationId": "string",
+  "primaryDisplayPropertyDetails": "string",
+  "name": "string",
+  "dataType": "string"
+})
+};
+
+request(options, (error, response) => {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+```
+
+### 6. UNIREST NODE
+
+```javascript
+const unirest = require('unirest');
+
+unirest('POST', 'https://services.leadconnectorhq.com/objects/')
+  .headers({
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json'
+  })
+  .send(JSON.stringify({
+  "labels": "string",
+  "singular": "string",
+  "plural": "string",
+  "key": "string",
+  "description": "string",
+  "locationId": "string",
+  "primaryDisplayPropertyDetails": "string",
+  "name": "string",
+  "dataType": "string"
+}))
+  .end(res => console.log(res.raw_body));
+```
+
+### 7. PYTHON
+
+```python
+import requests
+import json
+
+url = "https://services.leadconnectorhq.com/objects/"
+headers = {
+  'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+  'Version': '2021-07-28',
+  'Content-Type': 'application/json'
+}
+response = requests.request("POST", url, headers=headers, data=json.dumps({
+  "labels": "string",
+  "singular": "string",
+  "plural": "string",
+  "key": "string",
+  "description": "string",
+  "locationId": "string",
+  "primaryDisplayPropertyDetails": "string",
+  "name": "string",
+  "dataType": "string"
+}))
+print(response.text)
+```
+
+### 8. PHP
+
+```php
+<?php
+use GuzzleHttp\Client;
+$client = new Client();
+$headers = [
+  'Authorization' => 'Bearer <YOUR_ACCESS_TOKEN>',
+  'Version' => '2021-07-28',
+  'Content-Type' => 'application/json'
+];
+$response = $client->request('POST', 'https://services.leadconnectorhq.com/objects/', [
+  'headers' => $headers,
+  'body' => '{
+  "labels": "string",
+  "singular": "string",
+  "plural": "string",
+  "key": "string",
+  "description": "string",
+  "locationId": "string",
+  "primaryDisplayPropertyDetails": "string",
+  "name": "string",
+  "dataType": "string"
+}'
+]);
+echo $response->getBody();
+```
+
+### 9. JAVA
+
+```java
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+HttpClient client = HttpClient.newHttpClient();
+HttpRequest request = HttpRequest.newBuilder()
+    .uri(URI.create("https://services.leadconnectorhq.com/objects/"))
+    .header("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+    .header("Version", "2021-07-28")
+    .header("Content-Type", "application/json")
+    .method("POST", HttpRequest.BodyPublishers.ofString("{
+  \"labels\": \"string\",
+  \"singular\": \"string\",
+  \"plural\": \"string\",
+  \"key\": \"string\",
+  \"description\": \"string\",
+  \"locationId\": \"string\",
+  \"primaryDisplayPropertyDetails\": \"string\",
+  \"name\": \"string\",
+  \"dataType\": \"string\"
+}"))
+    .build();
+
+HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+System.out.println(response.body());
+```
+
+### 10. GO
+
+```go
+package main
+import (
+  "fmt"
+  "strings"
+  "net/http"
+  "io/ioutil"
+)
+func main() {
+  url := "https://services.leadconnectorhq.com/objects/"
+  payload := strings.NewReader(`{
+  "labels": "string",
+  "singular": "string",
+  "plural": "string",
+  "key": "string",
+  "description": "string",
+  "locationId": "string",
+  "primaryDisplayPropertyDetails": "string",
+  "name": "string",
+  "dataType": "string"
+}`)
+  req, _ := http.NewRequest("POST", url, payload)
+  req.Header.Add("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+  req.Header.Add("Version", "2021-07-28")
+  req.Header.Add("Content-Type", "application/json")
+  res, _ := http.DefaultClient.Do(req)
+  defer res.Body.Close()
+  body, _ := ioutil.ReadAll(res.Body)
+  fmt.Println(string(body))
+}
+```
+
+### 11. RUBY
+
+```ruby
+require 'net/http'
+require 'uri'
+require 'json'
+
+url = URI("https://services.leadconnectorhq.com/objects/")
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+request = Net::HTTP::Post.new(url)
+request["Authorization"] = "Bearer <YOUR_ACCESS_TOKEN>"
+request["Version"] = "2021-07-28"
+request["Content-Type"] = "application/json"
+request.body = JSON.dump({
+  "labels": "string",
+  "singular": "string",
+  "plural": "string",
+  "key": "string",
+  "description": "string",
+  "locationId": "string",
+  "primaryDisplayPropertyDetails": "string",
+  "name": "string",
+  "dataType": "string"
+})
+response = http.request(request)
+puts response.read_body
+```
+
+### 12. POWERSHELL
+
+```powershell
+$headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+$headers.Add("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+$headers.Add("Version", "2021-07-28")
+$headers.Add("Content-Type", "application/json")
+
+$body = '{
+  "labels": "string",
+  "singular": "string",
+  "plural": "string",
+  "key": "string",
+  "description": "string",
+  "locationId": "string",
+  "primaryDisplayPropertyDetails": "string",
+  "name": "string",
+  "dataType": "string"
+}'
+
+$response = Invoke-RestMethod 'https://services.leadconnectorhq.com/objects/' -Method 'POST' -Headers $headers -Body $body
+$response | ConvertTo-Json
+```
+
+---
+
+## 5. NOTES
+
+- Ensure the `Version: 2021-07-28` header is included.

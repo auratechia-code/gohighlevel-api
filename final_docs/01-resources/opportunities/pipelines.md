@@ -1,139 +1,295 @@
-# Opportunities: Pipelines & Config
-
-Manage pipeline configurations, retrieve available stages, and handle lost reasons.
-
-## 1. List Pipelines
-Fetch all pipelines and stages available in a specific location. Use this to find the `pipelineId` and `pipelineStageId` needed for opportunity creation/updates.
-
-- **Endpoint:** `GET /opportunities/pipelines`
-- **Method:** `GET`
-- **Scopes:** `opportunities.readonly`
-- **Headers:** 
-  - `Version: 2021-07-28`
-  - `Authorization: Bearer <TOKEN>`
-
-### Query Parameters
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `locationId` | String | Yes | The ID of the location. |
-
-### Example Response (200 OK)
-```json
-{
-  "pipelines": [
-    {
-      "id": "VDm7RPYC2GLUvdpKmBfC",
-      "name": "General Sales",
-      "index": 1,
-      "stages": [
-        {
-          "id": "e93ba61a-53b3-45e7-985a-c7732dbcdb69",
-          "name": "Lead In",
-          "index": 1
-        },
-        {
-          "id": "stage_2_id",
-          "name": "Follow-up",
-          "index": 2
-        }
-      ]
-    }
-  ]
-}
-```
+# Pipelines
 
 ---
 
-## 2. Lost Reasons
+## 1. METADATA
 
-### List Lost Reasons
-Fetch standard reasons for losing an opportunity.
+| Property | Value |
+| :--- | :--- |
+| **HTTP Method** | UNK |
+| **Endpoint URL** | `` |
+| **Scopes Required** | `N/A` |
+| **Authentication** | OAuth Access Token / Private Integration Token |
+| **Token Type** | Sub-Account Token |
 
-- **Endpoint:** `GET /opportunities/lost-reason`
+---
 
+## 2. REQUEST
 
-#### Example Requests
-```bash
-curl --request GET \
-  --url https://services.leadconnectorhq.com/opportunities/lost-reason \
-  --header 'Authorization: Bearer <TOKEN>' \
-  --header 'Version: 2021-07-28'
+### Header Parameters
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| **Version** | `string` | Yes | API version. Use `2021-07-28`. |
+
+### Path Parameters
+
+N/A
+### Query Parameters
+
+N/A
+### Body Parameters
+
+N/A
+---
+
+## 3. RESPONSE
+
+### Success Schema (200/201 OK)
+
+```json
+{}
 ```
+
+### Response Field Table
+
+N/A
+### Error Codes
+
+| Status Code | Description |
+| :--- | :--- |
+| **400 Bad Request** | Invalid input parameters. |
+| **401 Unauthorized** | Invalid Token. |
+
+---
+
+## 4. CODE EXAMPLES
+
+### 1. CURL
+
+```bash
+curl --request UNK \
+  --url  \
+  --header 'Authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'Version: 2021-07-28' \
+  --header 'Content-Type: application/json' \
+  --header 'Accept: application/json' \
+  --data '{}'
+```
+
+### 2. NODE SDK
+
+```javascript
+const { HighLevel } = require('@gohighlevel/api-client');
+
+const ghl = new HighLevel({
+  clientId: 'YOUR_CLIENT_ID',
+  clientSecret: 'YOUR_CLIENT_SECRET'
+});
+
+async function executeRequest() {
+  try {
+    const response = await ghl.api.request('UNK', '', {
+      headers: { 'Version': '2021-07-28' },
+      body: {}
+    });
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+  }
+}
+```
+
+### 3. AXIOS
 
 ```javascript
 const axios = require('axios');
 
+const config = {
+  method: 'unk',
+  url: '',
+  headers: { 
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>', 
+    'Version': '2021-07-28', 
+    'Content-Type': 'application/json', 
+    'Accept': 'application/json'
+  },
+  data : {}
+};
+
+axios(config)
+.then(response => console.log(JSON.stringify(response.data)))
+.catch(error => console.log(error));
+```
+
+### 4. NATIVE NODE
+
+```javascript
+const https = require('follow-redirects').https;
+
 const options = {
-  method: 'GET',
-  url: 'https://services.leadconnectorhq.com/opportunities/lost-reason',
-  headers: {
-    'Authorization': 'Bearer <TOKEN>',
-    'Version': '2021-07-28'
+  'method': 'UNK',
+  'hostname': 'services.leadconnectorhq.com',
+  'path': '',
+  'headers': {
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
   }
 };
 
-axios.request(options).then(function (response) {
-  console.log(response.data);
-}).catch(function (error) {
-  console.error(error);
+const req = https.request(options, (res) => {
+  let chunks = [];
+  res.on("data", (chunk) => chunks.push(chunk));
+  res.on("end", () => console.log(Buffer.concat(chunks).toString()));
+});
+
+req.write(JSON.stringify({}));
+req.end();
+```
+
+### 5. REQUEST NODE
+
+```javascript
+const request = require('request');
+
+const options = {
+  'method': 'UNK',
+  'url': '',
+  'headers': {
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({})
+};
+
+request(options, (error, response) => {
+  if (error) throw new Error(error);
+  console.log(response.body);
 });
 ```
 
+### 6. UNIREST NODE
+
+```javascript
+const unirest = require('unirest');
+
+unirest('UNK', '')
+  .headers({
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json'
+  })
+  .send(JSON.stringify({}))
+  .end(res => console.log(res.raw_body));
+```
+
+### 7. PYTHON
+
 ```python
 import requests
+import json
 
-url = "https://services.leadconnectorhq.com/opportunities/lost-reason"
-
+url = ""
 headers = {
-    "Authorization": "Bearer <TOKEN>",
-    "Version": "2021-07-28"
+  'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+  'Version': '2021-07-28',
+  'Content-Type': 'application/json'
 }
-
-response = requests.request("GET", url, headers=headers)
-
+response = requests.request("UNK", url, headers=headers, data=json.dumps({}))
 print(response.text)
 ```
 
+### 8. PHP
+
 ```php
 <?php
-
-$curl = curl_init();
-
-curl_setopt_array($curl, [
-  CURLOPT_URL => "https://services.leadconnectorhq.com/opportunities/lost-reason",
-  CURLOPT_RETURNTRANSFER => true,
-  CURLOPT_CUSTOMREQUEST => "GET",
-  CURLOPT_HTTPHEADER => [
-    "Authorization: Bearer <TOKEN>",
-    "Version: 2021-07-28"
-  ],
+use GuzzleHttp\Client;
+$client = new Client();
+$headers = [
+  'Authorization' => 'Bearer <YOUR_ACCESS_TOKEN>',
+  'Version' => '2021-07-28',
+  'Content-Type' => 'application/json'
+];
+$response = $client->request('UNK', '', [
+  'headers' => $headers,
+  'body' => '{}'
 ]);
+echo $response->getBody();
+```
 
-$response = curl_exec($curl);
-$err = curl_error($curl);
+### 9. JAVA
 
-curl_close($curl);
+```java
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
-if ($err) {
-  echo "cURL Error #:" . $err;
-} else {
-  echo $response;
+HttpClient client = HttpClient.newHttpClient();
+HttpRequest request = HttpRequest.newBuilder()
+    .uri(URI.create(""))
+    .header("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+    .header("Version", "2021-07-28")
+    .header("Content-Type", "application/json")
+    .method("UNK", HttpRequest.BodyPublishers.ofString("{}"))
+    .build();
+
+HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+System.out.println(response.body());
+```
+
+### 10. GO
+
+```go
+package main
+import (
+  "fmt"
+  "strings"
+  "net/http"
+  "io/ioutil"
+)
+func main() {
+  url := ""
+  payload := strings.NewReader(`{}`)
+  req, _ := http.NewRequest("UNK", url, payload)
+  req.Header.Add("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+  req.Header.Add("Version", "2021-07-28")
+  req.Header.Add("Content-Type", "application/json")
+  res, _ := http.DefaultClient.Do(req)
+  defer res.Body.Close()
+  body, _ := ioutil.ReadAll(res.Body)
+  fmt.Println(string(body))
 }
 ```
-- **Method:** `GET`
-- **Scopes:** `opportunities.readonly`
 
-### Query Parameters
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `locationId` | String | Yes | ID of the location. |
+### 11. RUBY
+
+```ruby
+require 'net/http'
+require 'uri'
+require 'json'
+
+url = URI("")
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+request = Net::HTTP::Unk.new(url)
+request["Authorization"] = "Bearer <YOUR_ACCESS_TOKEN>"
+request["Version"] = "2021-07-28"
+request["Content-Type"] = "application/json"
+request.body = JSON.dump({})
+response = http.request(request)
+puts response.read_body
+```
+
+### 12. POWERSHELL
+
+```powershell
+$headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+$headers.Add("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+$headers.Add("Version", "2021-07-28")
+$headers.Add("Content-Type", "application/json")
+
+$body = '{}'
+
+$response = Invoke-RestMethod '' -Method 'UNK' -Headers $headers -Body $body
+$response | ConvertTo-Json
+```
 
 ---
 
-## Error Catalog
-| HTTP | Code | Message |
-|------|------|---------|
-| 400 | `invalid_input` | Missing `locationId`. |
-| 401 | `unauthorized` | Missing or invalid Bearer token. |
-| 403 | `forbidden` | User does not have access to this location. |
-| 404 | `not_found` | Location ID not found. |
+## 5. NOTES
+
+- Ensure the `Version: 2021-07-28` header is included.

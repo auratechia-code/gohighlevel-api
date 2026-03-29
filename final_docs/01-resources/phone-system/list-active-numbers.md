@@ -1,67 +1,348 @@
-# GET List Active Numbers
+# List active numbers
 
-**Ruta:** `GET /phone-system/active-numbers`
-**Autenticación:** OAuth 2.0 / Private Integration Token
-**Scopes requeridos:** `phone-system.readonly`
-**Rate limit:** Estándar (100 req/10s burst — 200k/día)
+---
 
-## Descripción
-Recupera una lista paginada de todos los números de teléfono activos (comprados o portados) en una ubicación específica. Incluye detalles técnicos como SID de Twilio, capacidades (SMS/Voice), configuraciones de reenvío (forwarding) y usuarios vinculados.
+## 1. METADATA
 
-## Headers
-| Header        | Tipo   | Requerido | Valor             |
-|---------------|--------|-----------|-------------------|
-| Authorization | string | ✅        | Bearer {token}    |
-| Version       | string | ✅        | 2021-07-28        |
+| Property | Value |
+| :--- | :--- |
+| **HTTP Method** | GET |
+| **Endpoint URL** | `https://services.leadconnectorhq.com/phone-system/numbers/location/:locationId` |
+| **Scopes Required** | `phonenumbers.read` |
+| **Authentication** | OAuth Access Token / Private Integration Token |
+| **Token Type** | Sub-Account Token |
 
-## Query Parameters
-| Campo | Tipo | Requerido | Descripción |
-|-------|------|-----------|-------------|
-| `locationId` | string | ✅ | ID de la ubicación. |
-| `limit` | number | ❌ | Resultados por página (default 100). |
-| `page` | number | ❌ | Número de página. |
+---
 
-## Response 200
+## 2. REQUEST
+
+### Header Parameters
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| **Version** | `` | No |  |
+
+### Path Parameters
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| **locationId** | `` | No |  |
+
+### Query Parameters
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| **pageSize** | `` | No | page number The page index for pagination. The default is 0. Default value: 0 Example: 0 |
+| **page** | `` | No | searchFilter string Filter numbers by phone number pattern. Supports partial matching (e.g., "+91" to find all Indian numbers). Example: +91 |
+| **searchFilter** | `` | No | skipNumberPool boolean Whether to exclude numbers that are assigned to number pools. Default is true. Default value: true Example: |
+| **skipNumberPool** | `` | No |  |
+
+### Body Parameters
+
+N/A
+---
+
+## 3. RESPONSE
+
+### Success Schema (200/201 OK)
+
 ```json
 {
   "numbers": [
     {
       "phoneNumber": "+14155552671",
       "friendlyName": "Sales Line 1",
-      "sid": "PN123...",
+      "sid": "PN1234567890abcdef1234567890abcde",
+      "countryCode": "US",
       "capabilities": {
         "voice": true,
         "sms": true,
-        "mms": true
+        "mms": true,
+        "fax": false
       },
       "type": "local",
+      "isDefaultNumber": false,
+      "linkedUser": "user_123456789",
+      "linkedRingAllUsers": [
+        "user_123",
+        "user_456"
+      ],
+      "inboundCallService": {
+        "type": "voice_ai",
+        "value": "68e381b296a83800a27cd1"
+      },
       "forwardingNumber": "+14155552672",
-      "dateAdded": "2023-01-15T10:30:00Z"
+      "isGroupConversationEnabled": true,
+      "addressSid": "AD1234567890abcdef1234567890abcde",
+      "bundleSid": "BU1234567890abcdef1234567890abcde",
+      "dateAdded": "2023-01-15T10:30:00Z",
+      "dateUpdated": "2023-02-20T14:45:00Z",
+      "origin": "twilio"
     }
   ],
+  "isUnderGhl": true,
+  "pageSize": 100,
+  "page": 0,
   "accountStatus": "active"
 }
 ```
 
-## Errores
-| Status | Error | Causa frecuente | Solución |
-|--------|-------|-----------------|----------|
-| 401 | UNAUTHORIZED | Scope incorrecto. | Asegurar `phone-system.readonly`. |
-| 404 | NOT_FOUND | Ubicación no encontrada. | Verificar `locationId`. |
+### Response Field Table
 
-## Ejemplo — Node.js SDK
-```typescript
-const activeNumbers = await ghl.phoneSystem.listActiveNumbers('loc_abc');
-```
+| Name | Type | Description |
+| :--- | :--- | :--- |
+| **numbers** | `list` |  |
+| **isUnderGhl** | `bool` |  |
+| **pageSize** | `int` |  |
+| **page** | `int` |  |
+| **accountStatus** | `str` |  |
 
-## Ejemplo — cURL
+### Error Codes
+
+| Status Code | Description |
+| :--- | :--- |
+| **400 Bad Request** | Invalid input parameters. |
+| **401 Unauthorized** | Invalid Token. |
+
+---
+
+## 4. CODE EXAMPLES
+
+### 1. CURL
+
 ```bash
-curl -G \
-  'https://services.leadconnectorhq.com/phone-system/active-numbers' \
-  -H 'Authorization: Bearer YOUR_TOKEN' \
-  -H 'Version: 2021-07-28' \
-  -d 'locationId=loc_abc'
+curl --request GET \
+  --url https://services.leadconnectorhq.com/phone-system/numbers/location/:locationId \
+  --header 'Authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'Version: 2021-07-28' \
+  --header 'Content-Type: application/json' \
+  --header 'Accept: application/json' \
+  --data '{}'
 ```
 
-## Notas
-> Si el número está asignado a un "User", las llamadas entrantes sonarán primero para ese usuario específico. El campo `inboundCallService` indica si el número está siendo procesado por una IA de voz.
+### 2. NODE SDK
+
+```javascript
+const { HighLevel } = require('@gohighlevel/api-client');
+
+const ghl = new HighLevel({
+  clientId: 'YOUR_CLIENT_ID',
+  clientSecret: 'YOUR_CLIENT_SECRET'
+});
+
+async function executeRequest() {
+  try {
+    const response = await ghl.api.request('GET', 'https://services.leadconnectorhq.com/phone-system/numbers/location/:locationId', {
+      headers: { 'Version': '2021-07-28' },
+      body: {}
+    });
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+  }
+}
+```
+
+### 3. AXIOS
+
+```javascript
+const axios = require('axios');
+
+const config = {
+  method: 'get',
+  url: 'https://services.leadconnectorhq.com/phone-system/numbers/location/:locationId',
+  headers: { 
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>', 
+    'Version': '2021-07-28', 
+    'Content-Type': 'application/json', 
+    'Accept': 'application/json'
+  },
+  data : {}
+};
+
+axios(config)
+.then(response => console.log(JSON.stringify(response.data)))
+.catch(error => console.log(error));
+```
+
+### 4. NATIVE NODE
+
+```javascript
+const https = require('follow-redirects').https;
+
+const options = {
+  'method': 'GET',
+  'hostname': 'services.leadconnectorhq.com',
+  'path': '/phone-system/numbers/location/:locationId',
+  'headers': {
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  }
+};
+
+const req = https.request(options, (res) => {
+  let chunks = [];
+  res.on("data", (chunk) => chunks.push(chunk));
+  res.on("end", () => console.log(Buffer.concat(chunks).toString()));
+});
+
+req.write(JSON.stringify({}));
+req.end();
+```
+
+### 5. REQUEST NODE
+
+```javascript
+const request = require('request');
+
+const options = {
+  'method': 'GET',
+  'url': 'https://services.leadconnectorhq.com/phone-system/numbers/location/:locationId',
+  'headers': {
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({})
+};
+
+request(options, (error, response) => {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+```
+
+### 6. UNIREST NODE
+
+```javascript
+const unirest = require('unirest');
+
+unirest('GET', 'https://services.leadconnectorhq.com/phone-system/numbers/location/:locationId')
+  .headers({
+    'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json'
+  })
+  .send(JSON.stringify({}))
+  .end(res => console.log(res.raw_body));
+```
+
+### 7. PYTHON
+
+```python
+import requests
+import json
+
+url = "https://services.leadconnectorhq.com/phone-system/numbers/location/:locationId"
+headers = {
+  'Authorization': 'Bearer <YOUR_ACCESS_TOKEN>',
+  'Version': '2021-07-28',
+  'Content-Type': 'application/json'
+}
+response = requests.request("GET", url, headers=headers, data=json.dumps({}))
+print(response.text)
+```
+
+### 8. PHP
+
+```php
+<?php
+use GuzzleHttp\Client;
+$client = new Client();
+$headers = [
+  'Authorization' => 'Bearer <YOUR_ACCESS_TOKEN>',
+  'Version' => '2021-07-28',
+  'Content-Type' => 'application/json'
+];
+$response = $client->request('GET', 'https://services.leadconnectorhq.com/phone-system/numbers/location/:locationId', [
+  'headers' => $headers,
+  'body' => '{}'
+]);
+echo $response->getBody();
+```
+
+### 9. JAVA
+
+```java
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+HttpClient client = HttpClient.newHttpClient();
+HttpRequest request = HttpRequest.newBuilder()
+    .uri(URI.create("https://services.leadconnectorhq.com/phone-system/numbers/location/:locationId"))
+    .header("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+    .header("Version", "2021-07-28")
+    .header("Content-Type", "application/json")
+    .method("GET", HttpRequest.BodyPublishers.ofString("{}"))
+    .build();
+
+HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+System.out.println(response.body());
+```
+
+### 10. GO
+
+```go
+package main
+import (
+  "fmt"
+  "strings"
+  "net/http"
+  "io/ioutil"
+)
+func main() {
+  url := "https://services.leadconnectorhq.com/phone-system/numbers/location/:locationId"
+  payload := strings.NewReader(`{}`)
+  req, _ := http.NewRequest("GET", url, payload)
+  req.Header.Add("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+  req.Header.Add("Version", "2021-07-28")
+  req.Header.Add("Content-Type", "application/json")
+  res, _ := http.DefaultClient.Do(req)
+  defer res.Body.Close()
+  body, _ := ioutil.ReadAll(res.Body)
+  fmt.Println(string(body))
+}
+```
+
+### 11. RUBY
+
+```ruby
+require 'net/http'
+require 'uri'
+require 'json'
+
+url = URI("https://services.leadconnectorhq.com/phone-system/numbers/location/:locationId")
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+request = Net::HTTP::Get.new(url)
+request["Authorization"] = "Bearer <YOUR_ACCESS_TOKEN>"
+request["Version"] = "2021-07-28"
+request["Content-Type"] = "application/json"
+request.body = JSON.dump({})
+response = http.request(request)
+puts response.read_body
+```
+
+### 12. POWERSHELL
+
+```powershell
+$headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+$headers.Add("Authorization", "Bearer <YOUR_ACCESS_TOKEN>")
+$headers.Add("Version", "2021-07-28")
+$headers.Add("Content-Type", "application/json")
+
+$body = '{}'
+
+$response = Invoke-RestMethod 'https://services.leadconnectorhq.com/phone-system/numbers/location/:locationId' -Method 'GET' -Headers $headers -Body $body
+$response | ConvertTo-Json
+```
+
+---
+
+## 5. NOTES
+
+- Ensure the `Version: 2021-07-28` header is included.
