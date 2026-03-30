@@ -1,1 +1,54 @@
-# Contribuyendo a la Documentaci\u00f3n de la API de GHL\n\nGracias por ayudar a mantener la documentaci\u00f3n de alta fidelidad para la API de GoHighLevel. Sigue estas pautas para asegurar la consistencia y calidad en todo el repositorio.\n\n## \ud83d\udee0\ufe0f Est\u00e1ndares: La Plantilla de Oro (Gold Template)\nCada archivo de endpoint debe contener las siguientes secciones en orden:\n\n### 1. METADATA\n- **Method**: GET/POST/PUT/DELETE\n- **URL**: URL completa del endpoint\n- **Description**: Resumen conciso de la funcionalidad\n- **Scopes**: Scopes de OAuth requeridos\n- **Auth**: Tipos de token aceptados (Location, Agency, etc.)\n\n### 2. REQUEST\n- **Headers**: Headers obligatorios y opcionales\n- **Path Parameters**: Tabla con nombre, tipo, obligatorio (S/N) y descripci\u00f3n\n- **Query Parameters**: Tabla con nombre, tipo, obligatorio y descripci\u00f3n\n- **Body Parameters**: Esquema completo para peticiones POST/PUT/PATCH\n\n### 3. RESPONSE\n- **Schema**: Estructura JSON formateada y limpia\n- **Field Table**: Descripci\u00f3n manual de cada clave en la respuesta JSON\n\n### 4. CODE EXAMPLES\nProporcionar ejemplos funcionales en:\n- cURL, Node.js (Axios), Python (Requests), PHP (Guzzle), Java, Go, Ruby, C#, Swift, Dart, PowerShell, Rust.\n\n## \ud83d\udcc1 Naming & Ubicaci\u00f3n de Archivos\n- **Ruta**: `docs/01-referencia-api/{categor\u00eda}/{verbo}-{recurso}.md`\n- **Nombres**: Usar `kebab-case` en min\u00fasculas. Eliminar caracteres ilegales para Windows: `|`, `:`, `*`, `?`, `\"`, `<`, `>`, `\\`.\n\n## \ud83d\ude80 Flujo de Trabajo\n\n### A\u00f1adir un Nuevo Endpoint\n1. Identifica la categor\u00eda del recurso.\n2. Crea el archivo Markdown siguiendo la Plantilla de Oro.\n3. Valida la estructura ejecutando `python scripts/validate_docs.py`.\n4. Realiza el commit con un mensaje descriptivo en espa\u00f1ol.\n\n### Actualizar un Endpoint Existente\n1. Localiza el archivo en `docs/01-referencia-api/`.\n2. Actualiza la secci\u00f3n espec\u00edfica (ej. a\u00f1adiendo un nuevo par\u00e1metro de consulta).\n3. Asegura que el esquema de respuesta siga siendo preciso.\n4. Valida y realiza el commit.\n\n## \ud83e\uddea Control de Calidad (QA)\nAntes de enviar tus cambios, ejecuta:\n```bash\npython scripts/validate_docs.py\n```\nEste script verifica que no falten secciones y que las tablas est\u00e9n bien formadas.\n\n
+# Contribuyendo a la Documentación de la API de GHL
+
+Gracias por ayudar a mantener la documentación de alta fidelidad para la API de GoHighLevel. Sigue estas pautas para asegurar la consistencia y calidad en todo el repositorio.
+
+## 🛠️ Estándares: La Plantilla de Oro (Gold Template)
+Cada archivo de endpoint debe contener las siguientes secciones en orden:
+
+### 1. METADATA
+- **Method**: GET/POST/PUT/DELETE
+- **URL**: URL completa del endpoint
+- **Description**: Resumen conciso de la funcionalidad
+- **Scopes**: Scopes de OAuth requeridos
+- **Auth**: Tipos de token aceptados (Location, Agency, etc.)
+
+### 2. REQUEST
+- **Headers**: Headers obligatorios y opcionales
+- **Path Parameters**: Tabla con nombre, tipo, obligatorio (S/N) y descripción
+- **Query Parameters**: Tabla con nombre, tipo, obligatorio y descripción
+- **Body Parameters**: Esquema completo para peticiones POST/PUT/PATCH
+
+### 3. RESPONSE
+- **Schema**: Estructura JSON formateada y limpia
+- **Field Table**: Descripción manual de cada clave en la respuesta JSON
+
+### 4. CODE EXAMPLES
+Proporcionar ejemplos funcionales en:
+- cURL, Node.js (Axios), Python (Requests), PHP (Guzzle), Java, Go, Ruby, C#, Swift, Dart, PowerShell, Rust.
+
+## 📁 Naming & Ubicación de Archivos
+- **Ruta**: `docs/01-referencia-api/{categoría}/{verbo}-{recurso}.md`
+- **Nombres**: Usar `kebab-case` en minúsculas. Eliminar caracteres ilegales para Windows: `|`, `:`, `*`, `?`, `"`, `<`, `>`, `\`.
+
+## 🚀 Flujo de Trabajo
+
+### Añadir un Nuevo Endpoint
+1. Identifica la categoría del recurso.
+2. Crea el archivo Markdown siguiendo la Plantilla de Oro.
+3. Valida la estructura ejecutando `python scripts/validate_docs.py`.
+4. Realiza el commit con un mensaje descriptivo en español.
+
+### Actualizar un Endpoint Existente
+1. Localiza el archivo en `docs/01-referencia-api/`.
+2. Actualiza la sección específica (ej. añadiendo un nuevo parámetro de consulta).
+3. Asegura que el esquema de respuesta siga siendo preciso.
+4. Valida y realiza el commit.
+
+## 🧪 Control de Calidad (QA)
+Antes de enviar tus cambios, ejecuta:
+```bash
+python scripts/validate_docs.py
+```
+Este script verifica que no falten secciones y que las tablas estén bien formadas.
+
+

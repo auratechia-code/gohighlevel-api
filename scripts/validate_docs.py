@@ -1,1 +1,45 @@
-import os\nfrom pathlib import Path\n\nBASE_DIR = Path(\"c:/Users/luaco/OneDrive/Documentos/Dev/gohighlevel-api\")\nOUTPUT_DIR = BASE_DIR / \"docs\" / \"01-referencia-api\"\n\ndef validate_docs():\n    total_files = 0\n    errors = []\n    \n    # New pattern for checking essential blocks\n    required_patterns = [\n        \"---\", # Metadata start\n        \"### Estructura del Endpoint\",\n        \"### Ejemplos de Implementaci\u00f3n\",\n        \"````carousel\", # Our special code examples block\n        \"### Respuestas\",\n        \"\u00a9 2026 Scalefy System\"\n    ]\n    \n    for root, dirs, files in os.walk(OUTPUT_DIR):\n        for file in files:\n            if file.endswith('.md'):\n                total_files += 1\n                full_path = os.path.join(root, file)\n                with open(full_path, 'r', encoding='utf-8') as f:\n                    content = f.read()\n                    \n                    missing = [sec for sec in required_patterns if sec not in content]\n                    if missing:\n                        errors.append(f\"{file}: Faltan {', '.join(missing)}\")\n\n    print(f\"Resumen de Validaci\u00f3n (Nuevo Formato):\")\n    print(f\"Total de archivos encontrados: {total_files}\")\n    print(f\"Archivos con errores: {len(errors)}\")\n    \n    if errors:\n        print(\"\\nPrimeros 10 errores:\")\n        for err in errors[:10]:\n            print(f\"- {err}\")\n    else:\n        print(\"\\n\u2728 \u00a1Todos los archivos cumplen con el est\u00e1ndar AuraTechia!\")\n\nif __name__ == \"__main__\":\n    validate_docs()\n
+import os
+from pathlib import Path
+
+BASE_DIR = Path("c:/Users/luaco/OneDrive/Documentos/Dev/gohighlevel-api")
+OUTPUT_DIR = BASE_DIR / "docs" / "01-referencia-api"
+
+def validate_docs():
+    total_files = 0
+    errors = []
+    
+    # New pattern for checking essential blocks
+    required_patterns = [
+        "---", # Metadata start
+        "### Estructura del Endpoint",
+        "### Ejemplos de Implementación",
+        "````carousel", # Our special code examples block
+        "### Respuestas",
+        "© 2026 Scalefy System"
+    ]
+    
+    for root, dirs, files in os.walk(OUTPUT_DIR):
+        for file in files:
+            if file.endswith('.md'):
+                total_files += 1
+                full_path = os.path.join(root, file)
+                with open(full_path, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                    
+                    missing = [sec for sec in required_patterns if sec not in content]
+                    if missing:
+                        errors.append(f"{file}: Faltan {', '.join(missing)}")
+
+    print(f"Resumen de Validación (Nuevo Formato):")
+    print(f"Total de archivos encontrados: {total_files}")
+    print(f"Archivos con errores: {len(errors)}")
+    
+    if errors:
+        print("\nPrimeros 10 errores:")
+        for err in errors[:10]:
+            print(f"- {err}")
+    else:
+        print("\n✨ ¡Todos los archivos cumplen con el estándar AuraTechia!")
+
+if __name__ == "__main__":
+    validate_docs()

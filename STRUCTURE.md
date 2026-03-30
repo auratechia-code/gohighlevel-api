@@ -1,1 +1,46 @@
-# Mapa de Estructura del Repositorio\n\nEste documento proporciona una gu\u00eda de navegaci\u00f3n detallada para el repositorio de documentaci\u00f3n de la API de GHL, optimizada tanto para desarrolladores como para agentes de IA.\n\n## \ud83d\udcc1 \u00c1rbol de Directorios\n\n- `/docs`: Carpeta ra\u00edz de toda la documentaci\u00f3n.\n    - `/01-api-reference`: M\u00e1s de 588 documentos de endpoints de alta fidelidad.\n        - `/{categor\u00eda}/`: Endpoints agrupados por recursos de GHL (ej. calendars, contacts, payments).\n    - `/02-concepts`: Conceptos fundamentales para la integraci\u00f3n (L\u00edmites, Sandbox, Errores).\n    - `/03-guides`: Tutoriales basados en escenarios reales de integraci\u00f3n.\n    - `/04-sdk`: Informaci\u00f3n sobre SDKs disponibles y bibliotecas de la comunidad.\n- `/scripts`: Herramientas de automatizaci\u00f3n y validaci\u00f3n.\n    - `ghl_bulk_generator.py`: Motor de generaci\u00f3n masiva.\n    - `validate_docs.py`: Script de QA para verificar la integridad de la documentaci\u00f3n.\n- `/internal`: Activos t\u00e9cnicos privados (no recomendados para uso externo).\n    - `/raw_data`: Bases de datos JSON y resultados de scraping.\n\n## \ud83d\udcdd Convenciones de Documentos\n\n### Estructura de Documentaci\u00f3n de Endpoints\nCada archivo en `docs/01-api-reference/` sigue una estructura estricta (el \"Gold Template\"):\n1. **METADATA**: M\u00e9todo HTTP, URL, Scopes necesarios y requisitos de Auth.\n2. **REQUEST**: Tablas detalladas de Headers, Path Parameters, Query Parameters y Body.\n3. **RESPONSE**: Esquema JSON formateado y tabla descriptiva de cada campo.\n4. **CODE EXAMPLES**: 12 ejemplos funcionales en distintos lenguajes.\n5. **NOTES**: Detalles espec\u00edficos de implementaci\u00f3n y \"gotchas\".\n\n### Convenci\u00f3n de Nombres\nLos archivos deben nombrarse siguiendo el patr\u00f3n:\n`{verbo}-{recurso-singular}.md` en letras min\u00fasculas y usando `kebab-case`.\n*   Correcto: `create-contact.md`, `get-calendar-slot.md`.\n*   Incorrecto: `CreateContact.md`, `get_contact.md`.\n\n## \ud83d\udd0d Gu\u00eda de Navegaci\u00f3n\n\n### Para Desarrolladores Humanos \ud83d\udc68\u200d\ud83d\udcbb\n- Usa este **STRUCTURE.md** para entender la ubicaci\u00f3n de los recursos.\n- Utiliza la funci\u00f3n de b\u00fasqueda de tu editor para localizar endpoints por su nombre de archivo descriptivo.\n\n### Para Agentes de IA (Claude, GPT, etc.) \ud83d\udcbb\n- Trata `docs/01-api-reference/` como la fuente primaria de verdad para esquemas t\u00e9cnicos.\n- Consulta `docs/AI_CONTEXT.md` para reglas predefinidas sobre versiones y autenticaci\u00f3n.\n- Sigue las rutas definidas en este mapa para evitar alucinaciones de archivos inexistentes.\n\n
+# Mapa de Estructura del Repositorio
+
+Este documento proporciona una guía de navegación detallada para el repositorio de documentación de la API de GHL, optimizada tanto para desarrolladores como para agentes de IA.
+
+## 📁 Árbol de Directorios
+
+- `/docs`: Carpeta raíz de toda la documentación.
+    - `/01-api-reference`: Más de 588 documentos de endpoints de alta fidelidad.
+        - `/{categoría}/`: Endpoints agrupados por recursos de GHL (ej. calendars, contacts, payments).
+    - `/02-concepts`: Conceptos fundamentales para la integración (Límites, Sandbox, Errores).
+    - `/03-guides`: Tutoriales basados en escenarios reales de integración.
+    - `/04-sdk`: Información sobre SDKs disponibles y bibliotecas de la comunidad.
+- `/scripts`: Herramientas de automatización y validación.
+    - `ghl_bulk_generator.py`: Motor de generación masiva.
+    - `validate_docs.py`: Script de QA para verificar la integridad de la documentación.
+- `/internal`: Activos técnicos privados (no recomendados para uso externo).
+    - `/raw_data`: Bases de datos JSON y resultados de scraping.
+
+## 📝 Convenciones de Documentos
+
+### Estructura de Documentación de Endpoints
+Cada archivo en `docs/01-api-reference/` sigue una estructura estricta (el "Gold Template"):
+1. **METADATA**: Método HTTP, URL, Scopes necesarios y requisitos de Auth.
+2. **REQUEST**: Tablas detalladas de Headers, Path Parameters, Query Parameters y Body.
+3. **RESPONSE**: Esquema JSON formateado y tabla descriptiva de cada campo.
+4. **CODE EXAMPLES**: 12 ejemplos funcionales en distintos lenguajes.
+5. **NOTES**: Detalles específicos de implementación y "gotchas".
+
+### Convención de Nombres
+Los archivos deben nombrarse siguiendo el patrón:
+`{verbo}-{recurso-singular}.md` en letras minúsculas y usando `kebab-case`.
+*   Correcto: `create-contact.md`, `get-calendar-slot.md`.
+*   Incorrecto: `CreateContact.md`, `get_contact.md`.
+
+## 🔍 Guía de Navegación
+
+### Para Desarrolladores Humanos 👨‍💻
+- Usa este **STRUCTURE.md** para entender la ubicación de los recursos.
+- Utiliza la función de búsqueda de tu editor para localizar endpoints por su nombre de archivo descriptivo.
+
+### Para Agentes de IA (Claude, GPT, etc.) 🤖
+- Trata `docs/01-referencia-api/` como la fuente primaria de verdad para esquemas técnicos.
+- Consulta `docs/AI_CONTEXT.md` para reglas predefinidas sobre versiones y autenticación.
+- Sigue las rutas definidas en este mapa para evitar alucinaciones de archivos inexistentes.
+
+

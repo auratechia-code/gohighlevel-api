@@ -1,1 +1,46 @@
-# Contexto para IA: API 2.0 de GoHighLevel (GHL)\n\nEste documento proporciona contexto t\u00e9cnico de alta fidelidad para LLMs (Claude, GPT, Gemini, etc.) para asegurar la generaci\u00f3n de c\u00f3digo precisa y el soporte t\u00e9cnico de la API de GHL.\n\n## \ud83c\udf1f Fuente de Verdad T\u00e9cnica\nLa fuente primaria de verdad para todos los esquemas de endpoints, par\u00e1metros y ejemplos es el directorio `docs/01-referencia-api/`.\n**NO alucines endpoints.** Si un endpoint no est\u00e1 en este directorio, probablemente est\u00e9 obsoleto o sea interno.\n\n## \ud83d\udee0\ufe0f Headers Obligatorios\nCada petici\u00f3n a la API de GHL debe incluir:\n- `Authorization: Bearer {{ACCESS_TOKEN}}`\n- `Version: 2021-07-28` (Crucial: Usar cualquier otra versi\u00f3n puede resultar en errores 404 o esquemas desactualizados).\n- `Content-Type: application/json`\n\n## \ud83d\udd17 URLs Base\n- **Producci\u00f3n**: `https://services.leadconnectorhq.com`\n- **Obsoleto (V1)**: `https://api.gohighlevel.com` (NO USAR).\n\n## \ud83d\udd11 Autenticaci\u00f3n y Tokens\n- **Location Token (Sub-Account)**: Usado para operaciones a nivel de recurso (contactos, calendarios, etc.). Los scopes suelen ser `contacts.readonly`, `calendars.write`, etc.\n- **Agency Token**: Usado para gesti\u00f3n de cuentas y configuraci\u00f3n de alto nivel.\n- Consulta el scope apropiado en la secci\u00f3n `METADATA` de cada documento de endpoint.\n\n## \u26a0\ufe0f Manejo de Errores\n| C\u00f3digo | Significado | Causa Com\u00fan |\n| :--- | :--- | :--- |\n| **401** | Unauthorized | Token expirado o formato de Bearer incorrecto. |\n| **403** | Forbidden | Falta el scope requerido en el token. |\n| **404** | Not Found | Header `Version` incorrecto o ID de recurso inv\u00e1lido. |\n| **422** | Unprocessable Entity | Error de validaci\u00f3n (revisa el esquema del body). |\n| **429** | Too Many Requests | L\u00edmite de tasa excedido. |\n\n## \ud83d\udcc8 L\u00edmites de Tasa y Paginaci\u00f3n\n- **L\u00edmites de Tasa**: Respeta el c\u00f3digo de estado 429 e implementa un reintento con retroceso exponencial (exponential backoff).\n- **Paginaci\u00f3n**: La mayor\u00eda de las colecciones GET usan `limit` y `offset`. La respuesta incluye un objeto `meta` con `total`, `nextPage`, etc.\n\n## \ud83e\udd16 Instrucciones para Agentes de IA\n1. **Descubrimiento**: Antes de generar c\u00f3digo, busca el archivo correspondiente en `docs/01-referencia-api/{categor\u00eda}/{verbo}-{recurso}.md`.\n2. **Esquemas**: Usa estrictamente los campos definidos en la secci\u00f3n `RESPONSE` del documento encontrado.\n3. **Ejemplos**: Prefiere los ejemplos de c\u00f3digo proporcionados en el documento antes que generar uno desde cero.\n4. **Versi\u00f3n**: Fuerza siempre el uso de la versi\u00f3n `2021-07-28`.\n\n## \ud83d\udeab Restricciones Cr\u00edticas\n- **No usar `internal/`**: Esta carpeta contiene datos crudos y herramientas, no documentaci\u00f3n estable.\n- **No inventar campos**: Solo usa campos documentados en los esquemas de respuesta.\n- **V1 vs V2**: Esta biblioteca cubre exclusivamente la API 2.0. No asumas compatibilidad con implementaciones legacy de \"GHL V1\".\n\n
+# Contexto para IA: API 2.0 de GoHighLevel (GHL)
+
+Este documento proporciona contexto técnico de alta fidelidad para LLMs (Claude, GPT, Gemini, etc.) para asegurar la generación de código precisa y el soporte técnico de la API de GHL.
+
+## 🌟 Fuente de Verdad Técnica
+La fuente primaria de verdad para todos los esquemas de endpoints, parámetros y ejemplos es el directorio `docs/01-referencia-api/`.
+**NO alucines endpoints.** Si un endpoint no está en este directorio, probablemente esté obsoleto o sea interno.
+
+## 🛠️ Headers Obligatorios
+Cada petición a la API de GHL debe incluir:
+- `Authorization: Bearer {{ACCESS_TOKEN}}`
+- `Version: 2021-07-28` (Crucial: Usar cualquier otra versión puede resultar en errores 404 o esquemas desactualizados).
+- `Content-Type: application/json`
+
+## 🔗 URLs Base
+- **Producción**: `https://services.leadconnectorhq.com`
+- **Obsoleto (V1)**: `https://api.gohighlevel.com` (NO USAR).
+
+## 🔑 Autenticación y Tokens
+- **Location Token (Sub-Account)**: Usado para operaciones a nivel de recurso (contactos, calendarios, etc.). Los scopes suelen ser `contacts.readonly`, `calendars.write`, etc.
+- **Agency Token**: Usado para gestión de cuentas y configuración de alto nivel.
+- Consulta el scope apropiado en la sección `METADATA` de cada documento de endpoint.
+
+## ⚠️ Manejo de Errores
+| Código | Significado | Causa Común |
+| :--- | :--- | :--- |
+| **401** | Unauthorized | Token expirado o formato de Bearer incorrecto. |
+| **403** | Forbidden | Falta el scope requerido en el token. |
+| **404** | Not Found | Header `Version` incorrecto o ID de recurso inválido. |
+| **422** | Unprocessable Entity | Error de validación (revisa el esquema del body). |
+| **429** | Too Many Requests | Límite de tasa excedido. |
+
+## 📈 Límites de Tasa y Paginación
+- **Límites de Tasa**: Respeta el código de estado 429 e implementa un reintento con retroceso exponencial (exponential backoff).
+- **Paginación**: La mayoría de las colecciones GET usan `limit` y `offset`. La respuesta incluye un objeto `meta` con `total`, `nextPage`, etc.
+
+## 🤖 Instrucciones para Agentes de IA
+1. **Descubrimiento**: Antes de generar código, busca el archivo correspondiente en `docs/01-referencia-api/{categoría}/{verbo}-{recurso}.md`.
+2. **Esquemas**: Usa estrictamente los campos definidos en la sección `RESPONSE` del documento encontrado.
+3. **Ejemplos**: Prefiere los ejemplos de código proporcionados en el documento antes que generar uno desde cero.
+4. **Versión**: Fuerza siempre el uso de la versión `2021-07-28`.
+
+## 🚫 Restricciones Críticas
+- **No usar `internal/`**: Esta carpeta contiene datos crudos y herramientas, no documentación estable.
+- **No inventar campos**: Solo usa campos documentados en los esquemas de respuesta.
+- **V1 vs V2**: Esta biblioteca cubre exclusivamente la API 2.0. No asumas compatibilidad con implementaciones legacy de "GHL V1".

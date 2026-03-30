@@ -1,1 +1,67 @@
-# Biblioteca de Documentaci\u00f3n de la API de GoHighLevel (GHL)\n\n\u00a1Bienvenido! Esta es la fuente de verdad definitiva para integraciones t\u00e9cnicas con el ecosistema de **GoHighLevel (GHL)**. Repositorio mantenido por **Scalefy System**.\n\nEste recurso ha sido dise\u00f1ado para ser ultra-legible tanto para desarrolladores humanos como para agentes de inteligencia artificial (Claude, GPT, Cursor, etc.).\n\n---\n\n## \ud83d\udcd1 \u00cdndice de Navegaci\u00f3n\n\n1. [Estructura del Repositorio](#-estructura-del-repositorio)\n2. [Gu\u00eda de Inicio R\u00e1pido](#-inicio-r\u00e1pido)\n3. [C\u00f3mo Buscar un Endpoint](#-c\u00f3mo-buscar-un-endpoint)\n4. [Convenciones T\u00e9cnicas](#-convenciones-t\u00e9cnicas)\n5. [Documentos Relacionados](#-documentos-relacionados)\n\n---\n\n## \ud83d\udcc2 Estructura del Repositorio\n\nPara mantener el orden y la escalabilidad, el repositorio se organiza de la siguiente manera:\n\n- `docs/01-referencia-api/`: Documentaci\u00f3n de alta fidelidad para **588+ endpoints**, incluyendo ejemplos en 12 lenguajes y esquemas de respuesta.\n- `docs/02-conceptos/`: Conceptos fundamentales (Autenticaci\u00f3n, Sandbox, L\u00edmites de Tasa, etc.).\n- `docs/03-guias/`: Gu\u00edas de integraci\u00f3n por m\u00f3dulos y tutoriales paso a paso.\n- `docs/04-sdk/`: Referencias para SDKs oficiales y de la comunidad.\n- `scripts/`: Herramientas internas para validaci\u00f3n y generaci\u00f3n de documentos.\n- `internal/`: Activos t\u00e9cnicos privados y bases de datos crudas (JSON).\n\n---\n\n## \ud83d\ude80 Inicio R\u00e1pido\n\nPara empezar a trabajar con la API 2.0 de GHL:\n\n1. **Autenticaci\u00f3n**: GHL utiliza OAuth 2.0. Necesitar\u00e1s un `access_token` v\u00e1lido.\n2. **Header Obligatorio**: Todas las peticiones **DEBEN** incluir el header `Version: 2021-07-28`.\n3. **Base URL**: `https://services.leadconnectorhq.com`\n\n---\n\n## \ud83d\udd0d C\u00f3mo Buscar un Endpoint\n\nSeguimos una convenci\u00f3n de nombres estricta para facilitar la b\u00fasqueda:\n`docs/01-referencia-api/{categor\u00eda}/{verbo}-{recurso}.md`\n\n*   **Ejemplo**: Para crear un contacto: `docs/01-referencia-api/contacts/create-contact.md`.\n*   **Ejemplo**: Para listar calendarios: `docs/01-referencia-api/calendars/list-calendars.md`.\n\n---\n\n## \ud83d\udee0\ufe0f Convenciones Clave\n\n- **Fidelidad AI**: Cada p\u00e1gina incluye esquemas JSON reales para que tu IA no alucine.\n- **Ejemplos Multilenguaje**: Disponibles en cURL, Node.js, Python, PHP, Java, Go, Rust, y m\u00e1s.\n- **Actualizaci\u00f3n**: Basado en el \u00faltimo \"scrape\" oficial de la documentaci\u00f3n de GHL.\n\n---\n\n## \ud83d\udcd6 Documentos Relacionados\n\n- [Mapa Detallado de Estructura](STRUCTURE.md)\n- [Contexto para Agentes de IA](docs/AI_CONTEXT.md)\n- [Gu\u00eda de Contribuci\u00f3n](CONTRIBUTING.md)\n\n---\n\u00a9 2026 Scalefy System. Todos los derechos reservados.\n
+# Biblioteca de Documentación de la API de GoHighLevel (GHL)
+
+¡Bienvenido! Esta es la fuente de verdad definitiva para integraciones técnicas con el ecosistema de **GoHighLevel (GHL)**. Repositorio mantenido por **Scalefy System**.
+
+Este recurso ha sido diseñado para ser ultra-legible tanto para desarrolladores humanos como para agentes de inteligencia artificial (Claude, GPT, Cursor, etc.).
+
+---
+
+## 📑 Índice de Navegación
+
+1. [Estructura del Repositorio](#-estructura-del-repositorio)
+2. [Guía de Inicio Rápido](#-inicio-rápido)
+3. [Cómo Buscar un Endpoint](#-cómo-buscar-un-endpoint)
+4. [Convenciones Técnicas](#-convenciones-técnicas)
+5. [Documentos Relacionados](#-documentos-relacionados)
+
+---
+
+## 📂 Estructura del Repositorio
+
+Para mantener el orden y la escalabilidad, el repositorio se organiza de la siguiente manera:
+
+- `docs/01-referencia-api/`: Documentación de alta fidelidad para **588+ endpoints**, incluyendo ejemplos en 12 lenguajes y esquemas de respuesta.
+- `docs/02-conceptos/`: Conceptos fundamentales (Autenticación, Sandbox, Límites de Tasa, etc.).
+- `docs/03-guias/`: Guías de integración por módulos y tutoriales paso a paso.
+- `docs/04-sdk/`: Referencias para SDKs oficiales y de la comunidad.
+- `scripts/`: Herramientas internas para validación y generación de documentos.
+- `internal/`: Activos técnicos privados y bases de datos crudas (JSON).
+
+---
+
+## 🚀 Inicio Rápido
+
+Para empezar a trabajar con la API 2.0 de GHL:
+
+1. **Autenticación**: GHL utiliza OAuth 2.0. Necesitarás un `access_token` válido.
+2. **Header Obligatorio**: Todas las peticiones **DEBEN** incluir el header `Version: 2021-07-28`.
+3. **Base URL**: `https://services.leadconnectorhq.com`
+
+---
+
+## 🔍 Cómo Buscar un Endpoint
+
+Seguimos una convención de nombres estricta para facilitar la búsqueda:
+`docs/01-referencia-api/{categoría}/{verbo}-{recurso}.md`
+
+*   **Ejemplo**: Para crear un contacto: `docs/01-referencia-api/contacts/create-contact.md`.
+*   **Ejemplo**: Para listar calendarios: `docs/01-referencia-api/calendars/list-calendars.md`.
+
+---
+
+## 🛠️ Convenciones Clave
+
+- **Fidelidad AI**: Cada página incluye esquemas JSON reales para que tu IA no alucine.
+- **Ejemplos Multilenguaje**: Disponibles en cURL, Node.js, Python, PHP, Java, Go, Rust, y más.
+- **Actualización**: Basado en el último "scrape" oficial de la documentación de GHL.
+
+---
+
+## 📖 Documentos Relacionados
+
+- [Mapa Detallado de Estructura](STRUCTURE.md)
+- [Contexto para Agentes de IA](docs/AI_CONTEXT.md)
+- [Guía de Contribución](CONTRIBUTING.md)
+
+---
+© 2026 Scalefy System. Todos los derechos reservados.
