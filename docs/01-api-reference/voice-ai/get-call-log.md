@@ -20,7 +20,7 @@
 
 | Name | Type | Required | Description |
 | :--- | :--- | :--- | :--- |
-| **Version** | `` | No |  |
+| **Version** | `2021-07-28` | Yes | Header de versión de API (obligatorio) |
 | **headers** | `object[]` | Yes | HTTP headers to include Array [ key string required HTTP header name Example: id value string required HTTP header value Example: 1234567890 ] |
 | **key** | `string` | No |  |
 | **value** | `string` | No |  |

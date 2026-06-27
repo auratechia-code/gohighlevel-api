@@ -20,7 +20,7 @@
 
 | Name | Type | Required | Description |
 | :--- | :--- | :--- | :--- |
-| **Version** | `` | No |  |
+| **Version** | `2021-07-28` | Yes | Header de versión de API (obligatorio) |
 
 ### Path Parameters
 

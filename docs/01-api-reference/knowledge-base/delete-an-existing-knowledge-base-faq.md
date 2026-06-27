@@ -21,7 +21,7 @@
 | Name | Type | Required | Description |
 | :--- | :--- | :--- | :--- |
 | **Authorization** | `` | Yes | Version string required Possible values: [ 2021-04-15 ] API Version |
-| **Version** | `` | No |  |
+| **Version** | `2021-07-28` | Yes | Header de versión de API (obligatorio) |
 
 ### Path Parameters
 
